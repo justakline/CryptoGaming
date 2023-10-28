@@ -1,0 +1,27 @@
+.color-guess-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.color-guess-btn {
+    display: inline-flex;
+    max-height: 500px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 38px;
+    border: 1.75px solid #000;
+    background: #C9F4F4;
+    margin-left: 10px;
+    width: 100px;
+}
+
+body{
+    background: #323131;
+}
