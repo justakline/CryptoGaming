@@ -65,7 +65,7 @@ const ColorGuess = () => {
 
     return(
         <div className="game-container">
-            <div>
+            <div className="ui-container">
                 <div className="timer">Time Left: {time} Seconds</div>
                 <div className="display-color-container" style={{background: color}}/>
                     <div className="color-guess-container">
