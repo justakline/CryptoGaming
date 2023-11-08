@@ -85,6 +85,21 @@ button{
     width: 100%;
 }
 
+.wallet-btn {
+    /* display: inline-flex;
+    max-height: 500px;
+    max-width: 1000px; */
+    /* padding: 10px; */
+    /* justify-content: center;
+    align-items: center; */
+    /* gap: 10px; */
+    border-radius: 38px;
+    border: 1.75px solid #000;
+    background: #C9F4F4;
+    height: auto;
+    width: 100%;
+}
+
 .color-guess-btn:nth-child(2) {
     margin-left: 5px;
     margin-right: 5px;
