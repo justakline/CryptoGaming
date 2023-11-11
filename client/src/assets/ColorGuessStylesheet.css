@@ -20,12 +20,14 @@
 .start-btn{
     border-radius: 38px;
     border: 1.75px solid #000;
-    background: #C9F4F4;
+    /* background: #C9F4F4; */
+    background: #367878;
     width: auto;
     align-self: center;
     display: block;
     margin: 0 auto;
     margin-top: 10px;
+    padding: 4px;
 }
 
 .display-color-container {
@@ -47,11 +49,6 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 10%; */
-}
-
-button{
-    padding: 4px;
-    border-radius: 3px;
 }
 
 .color-guess-container{
@@ -81,8 +78,10 @@ button{
     /* gap: 10px; */
     border-radius: 38px;
     border: 1.75px solid #000;
-    background: #C9F4F4;
+    /* background: #C9F4F4; */
+    background: #367878;
     width: 100%;
+    padding: 4px;
 }
 
 .wallet-btn {
@@ -98,6 +97,7 @@ button{
     background: #C9F4F4;
     height: auto;
     width: 100%;
+    padding: 4px;
 }
 
 .color-guess-btn:nth-child(2) {
