@@ -3,3 +3,5 @@
 const PieceType = {
     REGULAR: Symbol("regular"), KING:Symbol("king")
 }
+
+export default PieceType;

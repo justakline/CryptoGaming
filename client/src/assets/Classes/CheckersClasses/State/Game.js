@@ -1,3 +1,6 @@
+import Board from './Board'
+import PlayerNumber from './PlayerNumber'
+
 class Game {
     constructor() {
       this.board = new Board();
@@ -14,7 +17,7 @@ class Game {
       const piece = this.board.getPiece(fromRow, fromCol);
 
       //Can't jump to a piece that is already there
-      if(this.board.getPiece(toRow, toCol)){
+      if(this.board.getPiece(toRow, toCol) == null){
         return false
       }
 
@@ -45,7 +48,7 @@ class Game {
 
       if(piece.isKing()){
 
-        if(player == PlayerNumber.PLAYER_1){
+        if(player === PlayerNumber.PLAYER_1){
              //SIMPLE TURN   Player one moves up or down and either to the right or left, we already know where we are jumping to is empty
              if(Math.abs(dRow) === 1){
                 return (dCol === 1 || dCol === -1) 
@@ -56,14 +59,14 @@ class Game {
                 if(dRow < 0){
                     //DownLeft Jump
                     if(dCol < 0){
-                        capturePiece = board.getPiece(fromRow -1, fromCol -1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol -1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                     
                     //DownRight Jump
                     else {
-                        capturePiece = board.getPiece(fromRow -1, fromCol +1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol +1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                 }
                 //up Jump
@@ -71,14 +74,14 @@ class Game {
                 
                     //UpLeft Jump
                     if(dCol < 0){
-                        capturePiece = board.getPiece(fromRow +1, fromCol -1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol -1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                     
                     //UpRight Jump
                     else {
-                        capturePiece = board.getPiece(fromRow +1, fromCol +1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol +1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                  }
                
@@ -97,14 +100,14 @@ class Game {
                 if(dRow < 0){
                     //DownLeft Jump
                     if(dCol < 0){
-                        capturePiece = board.getPiece(fromRow -1, fromCol -1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_1)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol -1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                     }
                     
                     //DownRight Jump
                     else {
-                        capturePiece = board.getPiece(fromRow -1, fromCol +1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_1)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol +1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                     }
                 }
                 //up Jump
@@ -112,14 +115,14 @@ class Game {
                 
                     //UpLeft Jump
                     if(dCol < 0){
-                        capturePiece = board.getPiece(fromRow +1, fromCol -1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol -1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                     
                     //UpRight Jump
                     else {
-                        capturePiece = board.getPiece(fromRow +1, fromCol +1)
-                        return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol +1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                  }
                
@@ -136,7 +139,7 @@ class Game {
       //Piece is not the king
       else{
 
-        if(player == PlayerNumber.PLAYER_1){
+        if(player === PlayerNumber.PLAYER_1){
 
             //SIMPLE TURN   Player one moves up and either to the right or left, we already know where we are jumping to is empty
             if(dRow === 1){
@@ -146,17 +149,17 @@ class Game {
             else if(dRow === 2){
                 //left jump
                 if(dCol < 0){
-                    capturePiece = board.getPiece(fromRow +1, fromCol -1)
+                    this.capturePiece = this.board.getPiece(fromRow +1, fromCol -1)
 
                     //If the capture piece exosts and it is their piece
-                    return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                    return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                 }
                 //Right Jump
                 else{
-                    capturePiece = board.getPiece(fromRow +1, fromCol +1)
+                    this.capturePiece = this.board.getPiece(fromRow +1, fromCol +1)
 
                     //If the capture piece exosts and it is their piece
-                    return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                    return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                 }
                
             }
@@ -171,17 +174,17 @@ class Game {
             else if(dRow === -2){
                 //left jump
                 if(dCol < 0){
-                    capturePiece = board.getPiece(fromRow -1, fromCol -1)
+                    this.capturePiece = this.board.getPiece(fromRow -1, fromCol -1)
 
                     //If the capture piece exosts and it is their piece
-                    return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_1)
+                    return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                 }
                 //Right Jump
                 else{
-                    capturePiece = board.getPiece(fromRow -1, fromCol +1)
+                    this.capturePiece = this.board.getPiece(fromRow -1, fromCol +1)
 
                     //If the capture piece exosts and it is their piece
-                    return capturePiece && capturePiece.belongsTo(PlayerNumber.PLAYER_1)
+                    return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                 }
                
             }
@@ -205,5 +208,13 @@ class Game {
       }
     }
 
+
+    //returns the 8x8 matrix with pieces as each index
+    getBoard(){
+      return this.board;
+    }
+
     
   }
+
+  export default Game;

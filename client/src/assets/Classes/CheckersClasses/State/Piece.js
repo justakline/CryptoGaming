@@ -1,5 +1,5 @@
 
-
+import PieceType from './PieceType'
 //Represents a piece, we can make King, decide whose piece it is and blah blah blah
 
 class Piece {
@@ -20,3 +20,4 @@ class Piece {
       return this.player === player;
     }
   }
+  export default Piece;

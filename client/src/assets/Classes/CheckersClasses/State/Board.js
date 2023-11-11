@@ -1,3 +1,7 @@
+
+import Piece from './Piece';
+import PlayerNumber from './PlayerNumber';
+
 class Board {
     constructor() {
       this.grid = this.createBoard();
@@ -6,12 +10,18 @@ class Board {
     createBoard() {
       const rows = 8;
       const cols = 8;
-      let board = [rows][cols]
+      let board = new Array(rows)
   
       for (let row = 0; row < rows; row++) {
-        for (let col = (row % 2); col < cols; col += 2) {//Every other col
-          if (row <= 2) board[row][col] = new Piece(PlayerNumber.PLAYER_1); //The first 3 rows
-          else if (row >= 5) board[row][col] = new Piece(PlayerNumber.PLAYER_2); //Last 3 rows
+        board[row] = new Array(cols)
+        for (let col = 0; col < cols; col ++) {
+          if (row <= 2 && ((row%2 ==0 && col %2 ==0) ||  (row%2 ==1 && col %2 ==1))){ // all of the red ones in every other col
+             board[row][col] = new Piece(PlayerNumber.PLAYER_1); //The first 3 rows
+        
+         }
+          else if (row >= 5 && ((row%2 ==0 && col %2 ==0) ||  (row%2 ==1 && col %2 ==1))) {
+            board[row][col] = new Piece(PlayerNumber.PLAYER_2); //Last 3 rows
+          } else board[row][col] = null;
         }
       }
   
@@ -37,3 +47,5 @@ class Board {
   
 
   }
+
+  export default Board;

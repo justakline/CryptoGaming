@@ -1,0 +1,29 @@
+:root{
+    --cell-size : 60px;
+    --border-size :3px;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column; 
+    background-color: darkgreen;
+    width: calc(8 * (var(--cell-size) +  var(--border-size))); /* Makes sure the width of the whole board is only 8 cells long taking into account the boarder*/
+    padding: 0px;
+    margin: auto;
+    
+}
+
+.board-row {
+    display: flex; /* Makes each row a flex container */
+    width: calc(8 * (var(--cell-size) +  var(--border-size)));
+    /* background-color: grey; */
+}
+
+.board-cell {
+    width:var(--cell-size); /* Adjust the width as needed */
+    height: var(--cell-size); /* Adjust the height as needed */
+    border: var(--border-size) solid gray; /* Border for differentiating cells */
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+}
