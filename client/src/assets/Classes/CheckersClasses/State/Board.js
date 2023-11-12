@@ -31,18 +31,32 @@ class Board {
     //not caring about the rules here, that will be done somewhere else, only worrying about moving the state
     movePiece(fromRow, fromCol, toRow, toCol) {
         //Moving piece
+        
+        console.log(this.grid)
       const piece = this.grid[fromRow][fromCol];
+
+
+
+      // console.log(fromRow +", " + fromCol +" -> " + toRow +", " + toCol  )
+      // console.log(piece);
       this.grid[fromRow][fromCol] = null;
+      //  console.log("here")
       this.grid[toRow][toCol] = piece;
+      // console.log(piece);
   
       // Check if piece should be kinged
-      if ((piece.player === PlayerNumber.PLAYER_1 && toRow === 7) || (piece.player === PlayerNumber.PLAYER_2 && toRow === 0)) {
+      console.log(this.grid)
+      if (piece && ((piece.belongsTo(PlayerNumber.PLAYER_1) && toRow === 7) || (piece.belongsTo( PlayerNumber.PLAYER_2) && toRow === 0))) {
         piece.makeKing();
       }
     }
   
     getPiece(row, col) {
       return this.grid[row][col];
+    }
+
+    getBoard(){
+      return this;
     }
   
 

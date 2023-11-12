@@ -19,7 +19,7 @@ class PieceComponent extends React.Component {
       };
       return (
         <div style={pieceStyle}>
-        {piece.isKing && 'K'} {/* Display 'K' for king pieces */}
+        {(piece && piece.isKing())? "K": "P"} {/* Display 'K' for king pieces */}
         </div>
       );
     }

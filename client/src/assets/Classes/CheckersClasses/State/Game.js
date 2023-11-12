@@ -2,14 +2,28 @@ import Board from './Board'
 import PlayerNumber from './PlayerNumber'
 
 class Game {
-    constructor() {
-      this.board = new Board();
-      this.currentPlayer = PlayerNumber.PLAYER_1;
+    //Simulate overloading a constructor
+    constructor(existingGame) {
+
+      if(existingGame instanceof Game){
+        this.board = existingGame.getBoard()
+        this.currentPlayer = existingGame.getCurrentPlayer()
+      }else{
+         this.board = new Board();
+        this.currentPlayer = PlayerNumber.PLAYER_1;
+      }
+     
     }
-  
+
+
+    
     //Simple enough
     switchPlayer() {
       this.currentPlayer = this.currentPlayer === PlayerNumber.PLAYER_1 ? PlayerNumber.PLAYER_2 : PlayerNumber.PLAYER_1;
+    }
+
+    getCurrentPlayer(){
+      return this.currentPlayer
     }
   
   
@@ -17,7 +31,8 @@ class Game {
       const piece = this.board.getPiece(fromRow, fromCol);
 
       //Can't jump to a piece that is already there
-      if(this.board.getPiece(toRow, toCol) == null){
+      if(this.board.getPiece(toRow, toCol) != null){
+        console.log("Cant jump to a piece already there")
         return false
       }
 
@@ -33,6 +48,7 @@ class Game {
     
       //Can only move your own piece
       if(!piece.belongsTo(player)){
+        console.log("Can only move your piece")
         return false;
       }
 
@@ -40,6 +56,7 @@ class Game {
 
     //You can either do a simple move or a jump, so anything more than 2 is wrong
       if(Math.abs(dRow) > 2 || Math.abs(dCol) >2){
+        console.log("Can't move that far")
         return false;
       }
 
@@ -50,22 +67,26 @@ class Game {
 
         if(player === PlayerNumber.PLAYER_1){
              //SIMPLE TURN   Player one moves up or down and either to the right or left, we already know where we are jumping to is empty
-             if(Math.abs(dRow) === 1){
-                return (dCol === 1 || dCol === -1) 
+             if(Math.abs(dRow) === 1){ 
+                if(dCol === 1 || dCol === -1) {
+                  return true
+                }
+                console.log("Can move left and right only 1 for a simple turn")
+                return false
             }
             //CAPTURING TURN  Player one can move 2 places up or down
             else if(Math.abs(dRow) === 2){
                 //Down jump
-                if(dRow < 0){
+                if(dRow > 0){
                     //DownLeft Jump
                     if(dCol < 0){
-                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol -1)
+                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol -1)
                         return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                     
                     //DownRight Jump
                     else {
-                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol +1)
+                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol +1)
                         return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                 }
@@ -74,13 +95,13 @@ class Game {
                 
                     //UpLeft Jump
                     if(dCol < 0){
-                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol -1)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol -1)
                         return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                     
                     //UpRight Jump
                     else {
-                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol +1)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol +1)
                         return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
                     }
                  }
@@ -91,22 +112,26 @@ class Game {
         }else{
 
               //SIMPLE TURN   Player 2 moves up or down and either to the right or left, we already know where we are jumping to is empty
-            if(Math.abs(dRow) === 1){
-                return (dCol === 1 || dCol === -1) 
+            if(Math.abs(dRow) === 1){ 
+                if(dCol === 1 || dCol === -1) {
+                  return true
+                }
+                console.log("Can move left and right only 1 for a simple turn")
+                return false
             }
             //CAPTURING TURN  Player 2 can move 2 places up or down
             else if(Math.abs(dRow) === 2){
                 //Down jump
-                if(dRow < 0){
+                if(dRow > 0){
                     //DownLeft Jump
                     if(dCol < 0){
-                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol -1)
+                        this.capturePiece = this.board.getPiece(fromRow + 1, fromCol -1)
                         return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                     }
                     
                     //DownRight Jump
                     else {
-                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol +1)
+                        this.capturePiece = this.board.getPiece(fromRow + 1, fromCol +1)
                         return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                     }
                 }
@@ -115,14 +140,14 @@ class Game {
                 
                     //UpLeft Jump
                     if(dCol < 0){
-                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol -1)
-                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol -1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                     }
                     
                     //UpRight Jump
                     else {
-                        this.capturePiece = this.board.getPiece(fromRow +1, fromCol +1)
-                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_2)
+                        this.capturePiece = this.board.getPiece(fromRow -1, fromCol +1)
+                        return this.capturePiece && this.capturePiece.belongsTo(PlayerNumber.PLAYER_1)
                     }
                  }
                
@@ -200,14 +225,37 @@ class Game {
   
     // Method to move a piece if the move is valid
     move(fromRow, fromCol, toRow, toCol, player) {
+
       if (this.isValidMove(fromRow, fromCol, toRow, toCol, player)) {
-        this.board.movePiece(fromRow, fromCol, toRow, toCol);
+        this.movePiece(fromRow, fromCol, toRow, toCol);
+        console.log("Valid")
         this.switchPlayer();
+        return true
       } else {
-        throw new Error('Invalid move');
+        return false
+        // throw new Error('Invalid move');
+       
       }
     }
 
+      //Will move the piece and capture
+    movePiece(fromRow, fromCol, toRow, toCol){
+      
+      // Remove the captured peice
+      if(Math.abs(fromRow - toRow) == 2){
+        const captureRow = fromRow-toRow < 0? toRow-1 : fromRow -1  
+        const captureCol = fromCol-toCol < 0? toCol-1 : fromCol -1  
+        console.log("Jump")
+       
+        this.board.getBoard().grid[captureRow][captureCol] = null
+      }
+
+      //Move
+      this.board.movePiece(fromRow, fromCol, toRow, toCol)
+    
+
+    }
+    
 
     //returns the 8x8 matrix with pieces as each index
     getBoard(){
