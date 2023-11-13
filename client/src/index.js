@@ -1,19 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import TicTacToe from './games/TicTacToe';
 import ColorGuess from './games/ColorGuess';
 import Checkers from './games/Checkers';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
-<>  
-    {/* <ColorGuess /> */}
-    <Checkers/> 
-  
-</>
-);
+    <div>
+      <ColorGuess />
+      <TicTacToe />
+      <Checkers/>
+    </div>
+  );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
