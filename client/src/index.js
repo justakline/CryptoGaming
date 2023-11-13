@@ -6,14 +6,13 @@ import TicTacToe from './games/TicTacToe';
 import ColorGuess from './games/ColorGuess';
 import Checkers from './games/Checkers';
 
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
     <div>
       <ColorGuess />
       <TicTacToe />
-      <Checkers/>
+      <Checkers />
     </div>
   );
 
