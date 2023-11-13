@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import TicTacToe from './games/TicTacToe';
 import ColorGuess from './games/ColorGuess';
 import Checkers from './games/Checkers';
+import WordSearch from './games/WordSearch';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -13,6 +14,7 @@ root.render(
       <ColorGuess />
       <TicTacToe />
       <Checkers />
+      <WordSearch />
     </div>
   );
 
