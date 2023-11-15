@@ -5,6 +5,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border: 3px solid;
+    animation: colorCycle 5s infinite;
 }
 
 .site-name{
@@ -39,4 +41,12 @@
 
 body{
     background-color: #323131;
+}
+
+@keyframes colorCycle {
+    0% {border-color: red;}
+    25% {border-color: orange;}
+    50% {border-color: green;}
+    75% {border-color: blue;}
+    100% {border-color: red;}
 }

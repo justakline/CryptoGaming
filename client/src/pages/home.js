@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from '../components/header';
+import GameSelector from '../components/GameSelector';
 
 const Home = () => {
     const [address, setAddress] = useState('');
@@ -29,7 +30,10 @@ const Home = () => {
     }
 
     return (
-        <Header address={address} handleLinkWallet={handleLinkWallet}/>
+        <div>
+            <Header address={address} handleLinkWallet={handleLinkWallet}/>
+            <GameSelector />
+        </div>
     )
 }
 
