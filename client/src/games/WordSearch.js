@@ -1,6 +1,6 @@
 // src/components/WordSearch.js
 import React, { useState, useEffect } from 'react';
-import '../assets/WordSearch.css';
+import '../assets/stylesheets/WordSearch.css';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 

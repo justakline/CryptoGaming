@@ -1,4 +1,4 @@
-.game-container{
+.gameContainer{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,7 +17,7 @@
     /* background: blue; */
 }
 
-.start-btn{
+.startBtn{
     border-radius: 38px;
     border: 1.75px solid #000;
     /* background: #C9F4F4; */
@@ -30,7 +30,7 @@
     padding: 4px;
 }
 
-.display-color-container {
+.displayColorContainer {
     height: 200px;
     width: 97%;
     margin-bottom: 10px;
@@ -51,7 +51,7 @@
     margin-bottom: 10%; */
 }
 
-.color-guess-container{
+.colorGuessContainer{
     width: 100%;
     justify-content: space-evenly;
     display: inline-flex;
@@ -68,7 +68,7 @@
     margin-top: 5%; */
 }
 
-.color-guess-btn {
+.colorGuessBtn {
     /* display: inline-flex;
     max-height: 500px;
     max-width: 1000px; */
@@ -109,7 +109,7 @@ body{
     background: #323131;
 }
 
-.score-container{
+.scoreContainer{
     width: 100%;
     height: 50px;
     display: flex;
@@ -118,7 +118,7 @@ body{
     /* background: blue; */
 }
 
-.score-box{
+.scoreBox{
     width: 100%;
     height: 100%;
     background: #C9F4F4;
@@ -131,7 +131,7 @@ body{
     margin-top: 10px;
 }
 
-.score-indicator{
+.scoreIndicator{
     width: 10%;
     height: 40%;
     align-self: center;

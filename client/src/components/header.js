@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import '../assets/HomePageStyleSheet.css';
+import '../assets/stylesheets/HomePageStyleSheet.css';
 import profile_picture from '../assets/temp_pictures/hellcat_logo.jpg';
 
 const Header = (props) => {

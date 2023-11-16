@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import Header from '../components/header';
 import GameSelector from '../components/GameSelector';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const [address, setAddress] = useState('');
     const [addressAuthenticated, setAddressAuthenticated] = useState(false);
+
+    let navigate = useNavigate();
 
     const handleLinkWallet = async() => {
         const { ethereum } = window;
@@ -31,7 +34,18 @@ const Home = () => {
 
     const handleNavigation = (page) => {
         //set up nav logic here
-        console.log("inside handleNavigation, page = " + page);
+        if(page === 'color-guess'){
+            navigate('/color-guess', {state: {address}});
+        }
+        else if(page === 'checkers'){
+            navigate('/checkers', {state: {address}});
+        }
+        else if(page === 'word-search'){
+            navigate('/word-search', {state: {address}});
+        }
+        else if(page === 'tic-tac-toe'){
+            navigate('/tic-tac-toe', {state: {address}});
+        }
     }
 
     return (

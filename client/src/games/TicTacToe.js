@@ -1,4 +1,4 @@
-import "../assets/TicTacToeStylesheet.css";
+import "../assets/stylesheets/TicTacToeStylesheet.css";
 import React, { Component } from "react";
 
 class TicTacToe extends Component {
