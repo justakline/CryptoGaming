@@ -1,7 +1,16 @@
-import '../assets/ColorGuessStylesheet.css'
+import style from '../assets/stylesheets/ColorGuessStylesheet.module.css'
 import {useState, useEffect} from 'react';
+import Header from '../components/header';
+import { useLocation } from 'react-router-dom';
 
+//EASY: All hex colors are different
+//MEDIUM: 1 Chunk of the hex values are the same
+//HARD: 2 Chunks of the hex values are the same
+//IMPOSSIBLE: only 1 hex digit is different
 const ColorGuess = () => {
+    let location = useLocation();
+    let address = location.state.address;
+
     const [color, setColor] = useState("");
     const [colorOptions, setColorOptions] = useState([]);
     const [hasGuessed, setHasGuessed] = useState(false);
@@ -9,7 +18,6 @@ const ColorGuess = () => {
     const [time, setTime] = useState(30);
     const [ready, setReady] = useState(false);
     const [outOfGuesses, setOutOfGuesses] = useState(false);
-    const [currentAccount, setCurrentAcocunt] = useState();
     const [score, setScore] = useState(0);
 
     useEffect(() => {
@@ -26,30 +34,6 @@ const ColorGuess = () => {
             }
         }
     }, [time])
-
-    const handleLinkWallet = async() => {
-        const { ethereum } = window;
-        if(!ethereum){
-            console.log("Make sure you have metamask!");
-            return;
-        }
-
-        try{
-            const accounts = await ethereum.request({method: "eth_accounts"});
-            if(accounts.length !== 0){
-                const account = accounts[0];
-                console.log(account);
-                console.log(typeof account);
-                setCurrentAcocunt(account);
-            }
-            else{
-                console.log("no account found!");
-            }
-        }
-        catch(err){
-            console.log(err);
-        }
-    }
 
     const getColor = () => {
         const hexDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B','C','D','E','F'];
@@ -109,30 +93,32 @@ const ColorGuess = () => {
     }
 
     return(
-        <div className="game-container">
+        <div>
+            <Header address={address} />
+            <div className={style.gameContainer}>
             <div>
-                {currentAccount ? <button className="wallet-btn">{currentAccount.substring(0, 11) + '......' + currentAccount.substring(currentAccount.length - 12, currentAccount.length - 1)}</button> : <button className="color-guess-btn" onClick={handleLinkWallet}>Link Wallet</button>}
-                {time === 0 ? <div className="timer">GAME OVER</div> : <div className="timer">Time Left: {time} Seconds</div>}
-                <div className="display-color-container" style={{background: color}}/>
-                    <div className="color-guess-container">
+                {time === 0 ? <div className={style.timer}>GAME OVER</div> : <div className={style.timer}>Time Left: {time} Seconds</div>}
+                <div className={style.displayColorContainer} style={{background: color}}/>
+                    <div className={style.colorGuessContainer}>
                         {colorOptions.map((color) => {
                             return(
-                                <button className="color-guess-btn" key={color} style={{visibility: numGuesses === 5 ? 'hidden' : 'visible'}} onClick={() => handleColorClick(color)}>{color}</button>
+                                <button className={style.colorGuessBtn} key={color} style={{visibility: numGuesses === 5 ? 'hidden' : 'visible'}} onClick={() => handleColorClick(color)}>{color}</button>
                             )
                         })}
                     </div>
-                    <div className="score-container">
-                        <div className="score-box">
-                            <div className="score-indicator" id='1'/>
-                            <div className="score-indicator" id='2'/>
-                            <div className="score-indicator" id='3'/>
-                            <div className="score-indicator" id='4'/>
-                            <div className="score-indicator" id='5'/>
+                    <div className={style.scoreContainer}>
+                        <div className={style.scoreBox}>
+                            <div className={style.scoreIndicator} id='1'/>
+                            <div className={style.scoreIndicator} id='2'/>
+                            <div className={style.scoreIndicator} id='3'/>
+                            <div className={style.scoreIndicator} id='4'/>
+                            <div className={style.scoreIndicator} id='5'/>
                         </div>
                     </div>
-                    {time === 0 || outOfGuesses === true ? <button className="start-btn" onClick={() => window.location.reload()}>RESTART</button> : 
-                    (ready === true ? null : <button className="start-btn" onClick={startGame}>START</button>) }
+                    {time === 0 || outOfGuesses === true ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
+                    (ready === true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
             </div>
+        </div>
         </div>
     )
 }

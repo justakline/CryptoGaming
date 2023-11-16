@@ -1,0 +1,84 @@
+/* src/components/WordSearch.css */
+
+body {
+  background: linear-gradient(to bottom right, red, orange, yellow);
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.word-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white; /* Add a white background for the game area */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle box shadow */
+}
+
+.welcome-message {
+  background-color: yellow;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a slight shadow to the welcome message */
+}
+
+table {
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden; /* Hide overflowing content within the table */
+}
+
+td {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition on background color change */
+}
+
+.clicked-cell {
+  background-color: orange;
+  color: white;
+  border-radius: 5px;
+}
+
+.found-word-cell {
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+}
+
+/* Add hover effect for a playful interaction */
+td:hover {
+  background-color: rgb(255, 255, 105);
+}
+
+.word-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  color: red;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.found-word {
+  color: green;
+}

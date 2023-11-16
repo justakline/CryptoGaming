@@ -1,0 +1,41 @@
+.game-container{
+    width: 50%;
+    height: 5em;
+    background-color: #404040;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: auto;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: 3px solid black;
+    border-radius: 15px;
+    border: 1px solid;
+    animation: colorCycle 5s infinite;
+}
+
+.game-select-button{
+    width: 15%;
+    height: 75%;
+    padding: 10px;
+    background-color: #118375;
+    border-radius: 15px;
+    border: 2px black solid;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+    margin: 5px;
+}
+
+.game-select-button:hover {
+    background-color: #0B5F4D;
+}
+
+@keyframes colorCycle {
+    0% {border-color: red;}
+    25% {border-color: orange;}
+    50% {border-color: green;}
+    75% {border-color: blue;}
+    100% {border-color: red;}
+}
