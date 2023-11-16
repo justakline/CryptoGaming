@@ -113,8 +113,13 @@ const ColorGuess = () => {
     }
 
     const startGame = () => {
-        setReady(true);
-        timer();
+        if(!difficulty){
+            alert('Please choose a difficulty!');
+        }
+        else{
+            setReady(true);
+            timer();
+        }
     }
 
     const timer = () => {
