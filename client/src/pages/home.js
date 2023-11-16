@@ -29,10 +29,15 @@ const Home = () => {
         }
     }
 
+    const handleNavigation = (page) => {
+        //set up nav logic here
+        console.log("inside handleNavigation, page = " + page);
+    }
+
     return (
         <div>
-            <Header address={address} handleLinkWallet={handleLinkWallet}/>
-            <GameSelector />
+            <Header address={address} handleLinkWallet={handleLinkWallet} />
+            <GameSelector handleNavigation={handleNavigation} />
         </div>
     )
 }

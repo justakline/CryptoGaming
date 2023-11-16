@@ -20,12 +20,16 @@
     padding: 10px;
     background-color: #118375;
     border-radius: 15px;
-    border: 1px black solid;
+    border: 2px black solid;
     justify-content: center;
     align-items: center;
     gap: 10px;
     display: inline-flex;
     margin: 5px;
+}
+
+.game-select-button:hover {
+    background-color: #0B5F4D;
 }
 
 @keyframes colorCycle {
