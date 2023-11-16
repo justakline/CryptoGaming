@@ -1,6 +1,6 @@
 /* src/components/WordSearch.css */
 
-body {
+.word-search-background {
   background: linear-gradient(to bottom right, red, orange, yellow);
   margin: 0;
   padding: 0;
