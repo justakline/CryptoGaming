@@ -2,6 +2,8 @@ import style from '../assets/stylesheets/ColorGuessStylesheet.module.css'
 import {useState, useEffect} from 'react';
 import Header from '../components/header';
 import { useLocation } from 'react-router-dom';
+import { ethers } from 'ethers';
+import colorGuessABI from '../assets/abi_files/ColorGuess.json';
 
 //EASY: All hex colors are different. pays 1:1
 //MEDIUM: 1 Chunk of the hex values are the same. pays 2:1
@@ -20,6 +22,62 @@ const ColorGuess = () => {
     const [outOfGuesses, setOutOfGuesses] = useState(false);
     const [score, setScore] = useState(0);
     const [difficulty, setDifficulty] = useState();
+    const [wager, setWager] = useState(0);
+
+    let tempWei = 1000000000000000000;
+    // let wei = BigInt(tempWei);
+
+    const handleWager = (wager) =>{
+        setWager(Number(wager));
+    }
+
+    // const contractAddress = "0x70043DE190f8642AF885c839cF941f9e78De228A"
+    const contractAddress = "0x3c4C20255783a54DeD57D123F642590068Ab7622"
+
+    const submitWager = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const wagerFixed = ethers.FixedNumber.from(wager.toString());
+        const transaction = await contract.wager({value: ethers.utils.parseEther(wagerFixed.toString())});
+        console.log('waiting for transaction to finish');
+        await transaction.wait();
+        console.log('transaction finished');
+    }
+
+    const collectWager = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const transaction = await contract.payout(2);
+        console.log('waiting for transaction to finish');
+        await transaction.wait();
+        console.log('transaction finished, check the wallet!');
+    }
+
+    const getBalance = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const balance = await contract.contractBalance();
+        console.log('balance of contract is: ' + Number(balance/tempWei));
+    }
+
+    const loadContract = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const wager = .2;
+        const wagerFixed = ethers.FixedNumber.from(wager.toString());
+        const transaction = await contract.loadContractBalane({value: ethers.utils.parseEther(wagerFixed.toString())});
+        console.log('waiting for transaction to finish');
+        await transaction.wait();
+        console.log('transaction finished');
+    }
 
     let hasGeneratedColor = false;
 
@@ -37,7 +95,6 @@ const ColorGuess = () => {
             }
         }
     }, [time])
-
     const getColor = () => {
         const hexDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B','C','D','E','F'];
         if(!difficulty || difficulty === 'easy'){
@@ -144,6 +201,11 @@ const ColorGuess = () => {
             <Header address={address} />
             <div className={style.gameContainer}>
             <div>
+                <input type="number" placeholder="Wager" onChange={(e) => handleWager(e.target.value)}></input>
+                <button onClick={() => submitWager()}>Wager</button>
+                <button onClick={() => getBalance()}>Get Balance</button>
+                <button onClick={() => collectWager()}>Collect Wager</button>
+                <button onClick={() => loadContract()}>Load Contract</button>
                 {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
                 {!difficulty ? (
                 <div className={style.colorGuessContainer}>
