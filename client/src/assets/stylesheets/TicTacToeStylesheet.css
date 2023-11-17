@@ -2,81 +2,84 @@
 
 /* Style the squares */
 .square {
-    background: #4fd9a2;
-    color: rgb(249, 4, 192); 
-    border: 2px solid #a94442;
-    width: 200px;
-    height: 200px;
-    font-size: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background 0.3s, color 0.3s;
-  }
-  
-  /* Add a hover effect to the squares */
-  .square:hover {
-    background: #f2dede;
-  }
-  
-  /* Style the status text */
-  .status {
-    font-size: 80px;
-    margin: 0;
-    text-align: center;
-    color: rgb(249, 4, 192); 
-  }
-  
-  /* Style the button container to center it vertically and horizontally */
-  .button-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-  
- /* Style the start button */
-button {
-    font-size: 18px;
-    cursor: pointer;
-    margin: 0;
-    background: #5bc0de;
-    border: 2px solid #46b8da;
-    border-radius: 5px;
-    color: white;
-    transition: background 0.3s, color 0.3s;
-    align-self: center; /* Center the button vertically */
+  background: #4fd9a2;
+  color:  black;
+  border: 2px solid #a94442;
+  width: 200px;
+  height: 200px;
+  font-size: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0s, color 0s;
 }
 
-  
-  /* Add a hover effect to the button */
-  button:hover {
-    background: #31b0d5;
-  }
-  
-  /* Style the board rows */
-  .board-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Set the background color of the game board */
-  .game-board {
-    background: rgb(249, 4, 192); 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 5px solid rgb(85, 85, 85);
-    border-radius: 10px;
-    padding: 10px;
-  }
-  
-  
+/* Add a hover effect to the squares */
+.square:hover {
+  background: #f2dede;
+}
+
+/* Style the status text */
+.status {
+  font-size: 75px;
+  margin: 0;
+  text-align: center;
+  color: black;
+}
+
+/* Style the dynamic player text for X */
+.status span + span + span {
+  color: black; /* Color for X */
+}
+
+/* Style the dynamic player text for O */
+.status span + span + span {
+  color: black; /* Color for O */
+}
+
+/* Style the button container to center it vertically and horizontally */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style the restart game button */
+button {
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0;
+  background: #5bc0de;
+  border: 2px solid #46b8da;
+  border-radius: 5px;
+  color: black;
+  transition: background 0.3s, color 0.3s;
+  align-self: center; /* Center the button vertically */
+}
+
+/* Add a hover effect to the button */
+button:hover {
+  background: #31b0d5;
+}
+
+/* Style the board rows */
+.board-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Set the background color of the game board */
+.game-board {
+  background: rgb(249, 4, 192);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0px solid rgb(85, 85, 85);
+  border-radius: 25px;
+  padding: 5px;
+}
