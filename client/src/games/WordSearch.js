@@ -156,7 +156,8 @@ const WordSearch = () => {
   }
 
   return (
-    <div className="word-search">
+    <div className='word-search-background'>
+      <div className="word-search">
       {showWelcomeMessage && (
         <div className="welcome-message">
           <p>Welcome to the Word Searching game. Find all words to win!</p>
@@ -203,6 +204,7 @@ const WordSearch = () => {
           ))}
         </ul>
       </div>
+    </div>
     </div>
   );
 };

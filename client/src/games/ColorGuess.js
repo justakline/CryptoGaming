@@ -3,10 +3,10 @@ import {useState, useEffect} from 'react';
 import Header from '../components/header';
 import { useLocation } from 'react-router-dom';
 
-//EASY: All hex colors are different
-//MEDIUM: 1 Chunk of the hex values are the same
-//HARD: 2 Chunks of the hex values are the same
-//IMPOSSIBLE: only 1 hex digit is different
+//EASY: All hex colors are different. pays 1:1
+//MEDIUM: 1 Chunk of the hex values are the same. pays 2:1
+//HARD: 2 Chunks of the hex values are the same. pays 3:1
+//IMPOSSIBLE: only 1 hex digit is different. pays 4:1
 const ColorGuess = () => {
     let location = useLocation();
     let address = location.state.address;
@@ -19,6 +19,9 @@ const ColorGuess = () => {
     const [ready, setReady] = useState(false);
     const [outOfGuesses, setOutOfGuesses] = useState(false);
     const [score, setScore] = useState(0);
+    const [difficulty, setDifficulty] = useState();
+
+    let hasGeneratedColor = false;
 
     useEffect(() => {
         const myColor = getColor();
@@ -37,7 +40,42 @@ const ColorGuess = () => {
 
     const getColor = () => {
         const hexDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B','C','D','E','F'];
-        return new Array(6).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+        if(!difficulty || difficulty === 'easy'){
+            return new Array(6).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+        }
+        else if(difficulty === 'medium'){
+            let firstFiveDigits = color[1] + color[2];
+            let restOfDigits = new Array(4).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+            let finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            while(finalArray === color){
+                restOfDigits = new Array(4).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+                finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            }
+            let returnArray = finalArray.split('#').pop();
+            return returnArray;
+        }
+        else if(difficulty === 'hard'){
+            let firstFiveDigits = color[1] + color[2] + color[3] + color[4];
+            let restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+            let finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            while(finalArray === color){
+                restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+                finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            }
+            let returnArray = finalArray.split('#').pop();
+            return returnArray;
+        }
+        else if(difficulty === 'impossible'){
+            let firstFiveDigits = color[1] + color[2] + color[3] + color[4] + color[5];
+            let restOfDigits = new Array(1).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+            let finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            while(finalArray === color){
+                restOfDigits = new Array(1).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+                finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            }
+            let returnArray = finalArray.split('#').pop();
+            return returnArray;
+        }
     }
 
     const handleColorClick = (guessedColor) => {
@@ -62,12 +100,12 @@ const ColorGuess = () => {
                 console.log("Incorrect!, thanks for your ETH");
             }
             // console.log("this is numguesses after the if else stmt: " + numGuesses);
+            hasGeneratedColor = false;
             setHasGuessed(!hasGuessed);
         }
     }
 
     const checkEndOfGame = () => {
-        // console.log('inside checkEndOfGame, numGuesses = ' + numGuesses);
         if(numGuesses + 1 === 5){
             setOutOfGuesses(true);
             alert(`You got ${score} out of 5 correct!`);
@@ -75,8 +113,13 @@ const ColorGuess = () => {
     }
 
     const startGame = () => {
-        setReady(true);
-        timer();
+        if(!difficulty){
+            alert('Please choose a difficulty!');
+        }
+        else{
+            setReady(true);
+            timer();
+        }
     }
 
     const timer = () => {
@@ -92,12 +135,26 @@ const ColorGuess = () => {
         }
     }
 
+    const handleSetDifficulty = (difficulty) => {
+        setDifficulty(difficulty);
+    }
+
     return(
         <div>
             <Header address={address} />
             <div className={style.gameContainer}>
             <div>
-                {time === 0 ? <div className={style.timer}>GAME OVER</div> : <div className={style.timer}>Time Left: {time} Seconds</div>}
+                {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
+                {!difficulty ? (
+                <div className={style.colorGuessContainer}>
+                    {/* <h1 style={{color: 'white'}}>Choose a difficulty</h1>  */}
+                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('easy')}>EASY</button>
+                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('medium')}>MEDIUM</button>
+                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('hard')}>HARD</button>
+                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('impossible')}>IMPOSSIBLE</button>
+                </div>) : (
+                    time === 0 ? (<div className={style.timer}>GAME OVER</div>) :( <div className={style.timer}>Time Left: {time} Seconds</div>)
+                )}
                 <div className={style.displayColorContainer} style={{background: color}}/>
                     <div className={style.colorGuessContainer}>
                         {colorOptions.map((color) => {
