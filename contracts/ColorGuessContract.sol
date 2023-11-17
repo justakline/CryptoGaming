@@ -43,6 +43,6 @@ contract ColorGuess {
     }
 
     function loadContractBalane() public payable{
-        
+        //this is only here so we can load the contract with a balance for paying out winning wagers
     }
 }
