@@ -28,12 +28,12 @@
   color: black;
 }
 
-/* Style the dynamic player text for X */
+/* Style the dynamic text for player X */
 .status span + span + span {
   color: black; /* Color for X */
 }
 
-/* Style the dynamic player text for O */
+/* Style the dynamic text for player O */
 .status span + span + span {
   color: black; /* Color for O */
 }
