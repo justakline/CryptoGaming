@@ -1,104 +1,48 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-contract ColorGuess{
-    address owner;
+contract ColorGuess {
+    address payable owner;
 
-    //all info stored for a player
     struct Player{
-        address payable player;
+        address payable id;
         uint256 wagerAmmount;
-        uint256 lifeTimeWagerAmount;
-        uint256 lifeTimeScore;
-        uint256 lifeTimeWins;
-        uint256 lifeTimeLosses;
-        uint256 lifeTimePlays;
-        string profilePicture;
-        bool exists;
+        bool hasBet;
     }
     mapping(address => Player) public players;
 
-    //stores the leaderboard, only the top 5 players
-    //this should only ever have a length of 5
-    address[] public leaderboardAddresses;
-
     constructor(){
-        owner = tx.origin;
+        owner = payable(tx.origin);
     }
 
-    //should this go in the main contract?
-    function wager(uint256 _wager) public payable {
-        require(msg.sender.balance >= _wager, "You do not have enough funds to wager that ammount");
-        require(msg.value == _wager, "You must wager the correct ammount");
-        if(players[msg.sender].exists == true){
-            players[msg.sender].wagerAmmount = _wager;
-            players[msg.sender].lifeTimeWagerAmount += _wager;
-        }
-        else{
-            players[msg.sender] = Player({
-                player: payable(msg.sender),
-                wagerAmmount: _wager,
-                lifeTimeWagerAmount: _wager,
-                lifeTimeScore: 0,
-                lifeTimeWins: 0,
-                lifeTimeLosses: 0,
-                lifeTimePlays: 0,
-                profilePicture: "",
-                exists: true
-            });
-        }
+    function wager() public payable{
+        require(msg.sender.balance >= msg.value, "You must have enough funds to wager");
+        require(msg.value > 0, "You must wager more than 0");
+        require(!players[msg.sender].hasBet, "You have already wagered");
+        players[msg.sender] = Player(payable(msg.sender), msg.value, true);
     }
 
-    //there should be a way to where the user does not need to pay for this
-    function setScore(uint256 _score, uint256 _difficulty) public payable {
-        //gets gas before any changes to state are made
-        uint256 initialGas = gasleft();
-        require(players[msg.sender].exists == true, "You must have played before to set a score");
-        if(_score == 5){
-            //multiplying the payout by the difficulty, the most is 5x
-            players[msg.sender].wagerAmmount *= _difficulty;
-            players[msg.sender].lifeTimeScore += _score;
-            updateLeaderboard(msg.sender);
-            //matt dibbern
-            //refunding the gas used to set the score and update leaderboard
-            uint256 gasUsed = initialGas - gasleft();
-            payable(msg.sender).transfer((gasUsed * tx.gasprice) + (players[msg.sender].wagerAmmount));
-        }
+    function payout(uint256 _difficulty) public{
+        require(players[msg.sender].hasBet, "You must have wagered to collect");
+        require(players[msg.sender].wagerAmmount > 0, "You must wager more than 0");
+        require(_difficulty > 0 && _difficulty < 5, "Difficulty must be greater than 0");
+        uint256 payoutAmmount = players[msg.sender].wagerAmmount * _difficulty;
+        payable(msg.sender).transfer(payoutAmmount);
+        players[msg.sender].hasBet = false;
         players[msg.sender].wagerAmmount = 0;
     }
 
-    //updates the leaderboard, only the top 5 players
-    function updateLeaderboard(address player) private{
-        if(leaderboardAddresses.length < 5){
-            leaderboardAddresses.push(player);
-        }
-        else{
-            if(players[leaderboardAddresses[4]].lifeTimeScore < players[player].lifeTimeScore){
-                leaderboardAddresses[4] = player;
-            }
-            else{
-                //doesnt put them in order, the frontend will have to sort them
-                address[] memory temp = new address[](5);
-                for(uint256 i = 0; i < leaderboardAddresses.length; i++){
-                    if(players[leaderboardAddresses[i]].lifeTimeScore < players[player].lifeTimeScore){
-                        temp[i] = player;
-                    }
-                    else{
-                        temp[i] = leaderboardAddresses[i];
-                    }
-                }
-                leaderboardAddresses = temp;
-                delete temp;
-            }
-        }
+    function losingWager() public{
+        require(players[msg.sender].hasBet, "You must have wagered to collect");
+        payable(owner).transfer(players[msg.sender].wagerAmmount);
+        players[msg.sender].hasBet = false;
     }
 
-    //returns the leaderboard
-    function getLeaderboard() public view returns(address[] memory){
-        return leaderboardAddresses;
+    function contractBalance() public view returns(uint256){
+        return address(this).balance;
     }
 
-    function getPlayerInfo() public view returns(Player memory){
-        return players[msg.sender];
+    function loadContractBalane() public payable{
+        
     }
 }
