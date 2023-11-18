@@ -239,44 +239,51 @@ const ColorGuess = () => {
         <div>
             <Header address={address} />
             <div className={style.gameContainer}>
-            <div>
-                <input type="number" placeholder="Wager" onChange={(e) => handleWager(e.target.value)}></input>
-                <button onClick={() => submitWager()}>Wager</button>
-                <button onClick={() => getBalance()}>Get Balance</button>
-                <button onClick={() => collectWager()}>Collect Wager</button>
-                <button onClick={() => loadContract()}>Load Contract</button>
-                {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
-                {!difficulty ? (
-                <div className={style.colorGuessContainer}>
-                    {/* <h1 style={{color: 'white'}}>Choose a difficulty</h1>  */}
-                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('easy')}>EASY</button>
-                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('medium')}>MEDIUM</button>
-                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('hard')}>HARD</button>
-                    <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('impossible')}>IMPOSSIBLE</button>
-                </div>) : (
-                    time === 0 ? (<div className={style.timer}>GAME OVER</div>) :( <div className={style.timer}>Time Left: {time} Seconds</div>)
-                )}
-                <div className={style.displayColorContainer} style={{background: color}}/>
+                <div>
+                    <input type="number" placeholder="Wager" onChange={(e) => handleWager(e.target.value)}></input>
+                    <button onClick={() => submitWager()}>Wager</button>
+                    <button onClick={() => getBalance()}>Get Balance</button>
+                    {/* <button onClick={() => loadContract()}>Load Contract</button> */}
+                    {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
+                    {!difficulty ? (
                     <div className={style.colorGuessContainer}>
-                        {colorOptions.map((color) => {
-                            return(
-                                <button className={style.colorGuessBtn} key={color} style={{visibility: numGuesses === 5 ? 'hidden' : 'visible'}} onClick={() => handleColorClick(color)}>{color}</button>
-                            )
-                        })}
-                    </div>
-                    <div className={style.scoreContainer}>
-                        <div className={style.scoreBox}>
-                            <div className={style.scoreIndicator} id='1'/>
-                            <div className={style.scoreIndicator} id='2'/>
-                            <div className={style.scoreIndicator} id='3'/>
-                            <div className={style.scoreIndicator} id='4'/>
-                            <div className={style.scoreIndicator} id='5'/>
+                        {/* <h1 style={{color: 'white'}}>Choose a difficulty</h1>  */}
+                        <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('easy')}>EASY</button>
+                        <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('medium')}>MEDIUM</button>
+                        <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('hard')}>HARD</button>
+                        <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('impossible')}>IMPOSSIBLE</button>
+                    </div>) : (
+                        time === 0 ? (<div className={style.timer}>GAME OVER</div>) :( <div className={style.timer}>Time Left: {time} Seconds</div>)
+                    )}
+                    <div className={style.displayColorContainer} style={{background: color}}/>
+                        <div className={style.colorGuessContainer}>
+                            {colorOptions.map((color) => {
+                                return(
+                                    <button className={style.colorGuessBtn} key={color} style={{visibility: numGuesses === 5 ? 'hidden' : 'visible'}} onClick={() => handleColorClick(color)}>{color}</button>
+                                )
+                            })}
                         </div>
-                    </div>
-                    {time === 0 || outOfGuesses === true ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
-                    (ready === true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
+                        <div className={style.scoreContainer}>
+                            <div className={style.scoreBox}>
+                                <div className={style.scoreIndicator} id='1'/>
+                                <div className={style.scoreIndicator} id='2'/>
+                                <div className={style.scoreIndicator} id='3'/>
+                                <div className={style.scoreIndicator} id='4'/>
+                                <div className={style.scoreIndicator} id='5'/>
+                            </div>
+                        </div>
+                        {time === 0 || outOfGuesses === true ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
+                        (ready === true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
+                </div>
+                <div className={style.leaderBoardContainer}>
+                    <p>Leaderboard</p>
+                    <p className={style.numberOneEntry} >0xf210F925fe6B83Bb3E74CDA3D993ea3eE0ae4ba1s</p>
+                    <p>2</p>
+                    <p>3</p>
+                    <p>4</p>
+                    <p>5</p>
+                </div>
             </div>
-        </div>
         </div>
     )
 }
