@@ -22,6 +22,7 @@ const ColorGuess = () => {
     const [outOfGuesses, setOutOfGuesses] = useState(false);
     const [score, setScore] = useState(0);
     const [difficulty, setDifficulty] = useState();
+    const [difficultyNum, setDifficultyNum] = useState(0);
     const [wager, setWager] = useState(0);
 
     let tempWei = 1000000000000000000;
@@ -47,14 +48,7 @@ const ColorGuess = () => {
     }
 
     const collectWager = async() => {
-        let abi = colorGuessABI.abi;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        const transaction = await contract.payout(2);
-        console.log('waiting for transaction to finish');
-        await transaction.wait();
-        console.log('transaction finished, check the wallet!');
+        
     }
 
     const getBalance = async() => {
@@ -79,14 +73,33 @@ const ColorGuess = () => {
         console.log('transaction finished');
     }
 
-    let hasGeneratedColor = false;
+    const getWalletBalance = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const balance = await contract.getWalletBalance();
+        console.log('balance of wallet is: ' + Number(balance/tempWei));
+    }
+
+    // useEffect(() => {
+    //     const myColor = getColor();
+    //     console.log("My Color: " + myColor);
+    //     setColor('#' + myColor);
+    //     setColorOptions(['#' + myColor, '#' + getColor(), '#' + getColor()]);
+    // }, [hasGuessed, ready]);
 
     useEffect(() => {
-        const myColor = getColor();
-        console.log("My Color: " + myColor);
-        setColor('#' + myColor);
-        setColorOptions(['#' + myColor, '#' + getColor(), '#' + getColor()]);
-    }, [hasGuessed, ready]);
+        if(numGuesses === 5){
+            checkEndOfGame();
+        }
+        else{
+            const myColor = getColor();
+            // console.log("My Color: " + myColor);
+            setColor('#' + myColor);
+            setColorOptions(['#' + myColor, '#' + getColor(), '#' + getColor()]);
+        }
+    }, [numGuesses, score])
 
     useEffect(() => {
         if(ready){
@@ -95,6 +108,7 @@ const ColorGuess = () => {
             }
         }
     }, [time])
+
     const getColor = () => {
         const hexDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B','C','D','E','F'];
         if(!difficulty || difficulty === 'easy'){
@@ -137,36 +151,47 @@ const ColorGuess = () => {
 
     const handleColorClick = (guessedColor) => {
         if(!ready){
-            alert('Please click the START button to begin the game!')
-        }
-        else if(numGuesses >= 5){
-            alert('out of guesses!');
+            alert('Please click start to begin the game!');
         }
         else{
-            if(guessedColor === color){
-                setNumGuesses(numGuesses + 1);
-                let scoreIndicator = document.getElementById(`${numGuesses + 1}`);
-                scoreIndicator.style.backgroundColor = 'green';
-                console.log("Correct!");
+            if(guessedColor == color){
+                document.getElementById(`${numGuesses + 1}`).style.backgroundColor = 'green';
                 setScore(score + 1);
+                setNumGuesses(numGuesses + 1);
             }
             else{
+                document.getElementById(`${numGuesses + 1}`).style.backgroundColor = 'red';
                 setNumGuesses(numGuesses + 1);
-                let scoreIndicator = document.getElementById(`${numGuesses + 1}`);
-                scoreIndicator.style.backgroundColor = 'red';
-                console.log("Incorrect!, thanks for your ETH");
             }
-            // console.log("this is numguesses after the if else stmt: " + numGuesses);
-            hasGeneratedColor = false;
-            setHasGuessed(!hasGuessed);
         }
     }
 
     const checkEndOfGame = () => {
-        if(numGuesses + 1 === 5){
+        if(numGuesses === 5){
             setOutOfGuesses(true);
             alert(`You got ${score} out of 5 correct!`);
+            if(score === 5){
+                collectWinnings();
+            }
+            else{
+                loseWager();
+            }
         }
+    }
+
+    const collectWinnings = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const transaction = await contract.payout(difficultyNum);
+        console.log('waiting for transaction to finish');
+        await transaction.wait();
+        console.log('transaction finished, check the wallet!');
+    }
+
+    const loseWager = async() => {
+
     }
 
     const startGame = () => {
@@ -193,6 +218,18 @@ const ColorGuess = () => {
     }
 
     const handleSetDifficulty = (difficulty) => {
+        if(difficulty === 'easy'){
+            setDifficultyNum(2);
+        }
+        else if(difficulty === 'medium'){
+            setDifficultyNum(3);
+        }
+        else if(difficulty === 'hard'){
+            setDifficultyNum(4);
+        }
+        else if(difficulty === 'impossible'){
+            setDifficultyNum(5);
+        }
         setDifficulty(difficulty);
     }
 

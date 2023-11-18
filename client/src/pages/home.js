@@ -17,7 +17,10 @@ const Home = () => {
         }
 
         try{
-            const accounts = await ethereum.request({method: "eth_accounts"});
+            const accounts = await window.ethereum.request({
+                method: "eth_requestAccounts",
+            });
+            // const accounts = await ethereum.request({method: "eth_accounts"});
             if(accounts.length !== 0){
                 const account = accounts[0];
                 setAddressAuthenticated(true)
