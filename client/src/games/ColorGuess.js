@@ -191,7 +191,9 @@ const ColorGuess = () => {
     }
 
     const loseWager = async() => {
-
+        //there is no need to have the player call the contract if they lose
+        //becuase there crypto is already in the contract
+        //so the contract owner just needs to call the contract to send the crypto to their wallet
     }
 
     const startGame = () => {
