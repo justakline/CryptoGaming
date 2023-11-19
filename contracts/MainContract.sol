@@ -1,67 +1,77 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-contract MainContract{
-    address owner;
+import './Game.sol';
 
-    //all info stored for a player
+contract MainContract{
+    mapping(address=>bool) addressToIsOwner;
+
+    // Game[] gamesPlayed = Game[](0);
+    // Game[] currentGames = Game[](0);
+    // Game[] allowedGameTypes = Game[](0);
+
     struct Player{
-        address payable player;
-        uint256 wagerAmmount;
-        uint256 lifeTimeWagerAmount;
         string profilePicture;
-        bool exists;
+        uint256[] gamesPlayed;
+        uint256[] currentGames;
+        uint256[] allowedGameTypes;
     }
-    mapping(address => Player) public players;
+    mapping(address => Player) players;
+
+    modifier onlyOwner(){
+        require(addressToIsOwner[msg.sender] == true, "Only the owner can do this");
+        _;
+    }
+
 
     constructor(){
-        owner = tx.origin;
+        addressToIsOwner[tx.origin] = true;
     }
 
-    //handles setting the wager ammount
-    function wager(uint256 _wager) public payable {
-        require(msg.sender.balance >= _wager, "You do not have enough funds to wager that ammount");
-        require(msg.value == _wager, "You must wager the correct ammount");
-        if(players[msg.sender].exists == true){
-            players[msg.sender].wagerAmmount = _wager;
-            players[msg.sender].lifeTimeWagerAmount += _wager;
-        }
-        else{
-            players[msg.sender] = Player({
-                player: payable(msg.sender),
-                wagerAmmount: _wager,
-                lifeTimeWagerAmount: _wager,
-                profilePicture: "",
-                exists: true
-            });
-        }
-    }
+    //Which type of game can be played
+    // function addPlayableGame(Game game) public onlyOwner{
+    //     allowedGameTypes.push(game);
+    // }
 
-    //there should be a way only the owner can call this?
-    //matt dibbern
-    //maybe an event can solve this?
-    //called when player wins in color guess
-    function payoutColorGuessWager(uint256 _difficulty, address playerToPay) public {
-        require(players[msg.sender].exists == true, "You must have payed before to collect your winnings");
-        payable(players[playerToPay].player).transfer(players[msg.sender].wagerAmmount * _difficulty);
-        players[msg.sender].wagerAmmount = 0;
-    }
+    //List of games currently being played
+    // function addCurrentGame(Game game) public {
 
-    //there sould be a way only the owner can call this?
-    //maybe an event can solve this?
-    //called when the player loses in color guess
-    function collectColorGuessWager(address playerToCollectFrom) public{
-        require(players[msg.sender].exists == true, "No player found with that address");
-        payable(owner).transfer(players[playerToCollectFrom].wagerAmmount);
-        players[msg.sender].wagerAmmount = 0;
-    }
+    //     currentGames.push(game);
+    //     gamesPlayed.push(game);
+    // }
 
-    function getPlayerInfo() public view returns(Player memory){
-        return players[msg.sender];
-    }
+    // function removeCurrentGame(Game game) public {
+
+    //     //There is no indexOf or remove, so just iterate through the array and find the game
+    //     //And replace it with the last one, thereby removing it
+    //     for (int i =0; i < currentGames.length; i++){
+    //         if (currentGames[i] == game){
+    //         currentGames[i] = currentGames[currentGames.length-1];
+    //         break;
+    //         }
+    //     }
+
+    // }
+
+    // function removeGame(Game game) public onlyOwner {
+    //     for (int i =0; i < currentGames.length; i++){
+    //         if (allowedGameTypes[i] == game){
+    //             allowedGameTypes[i] = allowedGameTypes[allowedGameTypes.length-1];
+    //             break;
+    //         }
+    //     }
+    // }
+
+    // function addOwner(address admin) public onlyOwner{
+    //     addressToIsOwner(msg.sender) = true;
+    // }
+    
 
     function setProfilePicture(string memory _profilePicture) public {
-        require(players[msg.sender].exists == true, "You must have payed before to set a profile picture");
         players[msg.sender].profilePicture = _profilePicture;
+    }
+
+    function getPlayer() public view returns(Player memory){
+        return players[msg.sender];
     }
 }
