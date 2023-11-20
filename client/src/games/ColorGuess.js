@@ -4,6 +4,7 @@ import Header from '../components/header';
 import { useLocation } from 'react-router-dom';
 import { ethers } from 'ethers';
 import colorGuessABI from '../assets/abi_files/ColorGuess.json';
+import useCountdown from '../hooks/useCountDown';
 
 //EASY: All hex colors are different. pays 1:1
 //MEDIUM: 1 Chunk of the hex values are the same. pays 2:1
@@ -17,70 +18,18 @@ const ColorGuess = () => {
     const [colorOptions, setColorOptions] = useState([]);
     const [hasGuessed, setHasGuessed] = useState(false);
     const [numGuesses, setNumGuesses] = useState(0);
-    const [time, setTime] = useState(30);
+    const [gameComplete, setGameComplete] = useState(false);
     const [ready, setReady] = useState(false);
     const [outOfGuesses, setOutOfGuesses] = useState(false);
     const [score, setScore] = useState(0);
     const [difficulty, setDifficulty] = useState();
     const [difficultyNum, setDifficultyNum] = useState(0);
     const [wager, setWager] = useState(0);
+    const {seconds, start, isActive} = useCountdown();
+    const [gameStarted, setGameStarted] = useState(false);
 
     let tempWei = 1000000000000000000;
     // let wei = BigInt(tempWei);
-
-    const handleWager = (wager) =>{
-        setWager(Number(wager));
-    }
-
-    // const contractAddress = "0x70043DE190f8642AF885c839cF941f9e78De228A"
-    const contractAddress = "0x3c4C20255783a54DeD57D123F642590068Ab7622"
-
-    const submitWager = async() => {
-        let abi = colorGuessABI.abi;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        const wagerFixed = ethers.FixedNumber.from(wager.toString());
-        const transaction = await contract.wager({value: ethers.utils.parseEther(wagerFixed.toString())});
-        console.log('waiting for transaction to finish');
-        await transaction.wait();
-        console.log('transaction finished');
-    }
-
-    const collectWager = async() => {
-        
-    }
-
-    const getBalance = async() => {
-        let abi = colorGuessABI.abi;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        const balance = await contract.contractBalance();
-        console.log('balance of contract is: ' + Number(balance/tempWei));
-    }
-
-    const loadContract = async() => {
-        let abi = colorGuessABI.abi;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        const wager = .2;
-        const wagerFixed = ethers.FixedNumber.from(wager.toString());
-        const transaction = await contract.loadContractBalane({value: ethers.utils.parseEther(wagerFixed.toString())});
-        console.log('waiting for transaction to finish');
-        await transaction.wait();
-        console.log('transaction finished');
-    }
-
-    const getWalletBalance = async() => {
-        let abi = colorGuessABI.abi;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        const balance = await contract.getWalletBalance();
-        console.log('balance of wallet is: ' + Number(balance/tempWei));
-    }
 
     // useEffect(() => {
     //     const myColor = getColor();
@@ -99,15 +48,69 @@ const ColorGuess = () => {
             setColor('#' + myColor);
             setColorOptions(['#' + myColor, '#' + getColor(), '#' + getColor()]);
         }
-    }, [numGuesses, score])
+    }, [numGuesses, score, ready])
 
     useEffect(() => {
-        if(ready){
-            if(timer !== 0){
-                timer();
-            }
+        if(seconds === 0){
+            // setGameComplete(true);
+            checkEndOfGame();
         }
-    }, [time])
+    }, [seconds])
+
+    const handleWager = (wager) =>{
+        setWager(Number(wager));
+    }
+
+    // const contractAddress = "0x70043DE190f8642AF885c839cF941f9e78De228A"
+    const colorGuessContact = "0x3c4C20255783a54DeD57D123F642590068Ab7622"
+
+    const submitWager = async() => {
+        if(wager > .05 || wager <= 0){
+            alert('Please enter a wager between 0 and .05');
+        }
+        else{
+            let abi = colorGuessABI.abi;
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(colorGuessContact, abi, signer);
+            const wagerFixed = ethers.FixedNumber.from(wager.toString());
+            const transaction = await contract.wager({value: ethers.utils.parseEther(wagerFixed.toString())});
+            console.log('waiting for transaction to finish');
+            await transaction.wait();
+            console.log('transaction finished');
+        }
+    }
+
+    const getBalance = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(colorGuessContact, abi, signer);
+        const balance = await contract.contractBalance();
+        console.log('balance of contract is: ' + Number(balance/tempWei));
+    }
+
+    const loadContract = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(colorGuessContact, abi, signer);
+        const wager = .2;
+        const wagerFixed = ethers.FixedNumber.from(wager.toString());
+        const transaction = await contract.loadContractBalane({value: ethers.utils.parseEther(wagerFixed.toString())});
+        console.log('waiting for transaction to finish');
+        await transaction.wait();
+        console.log('transaction finished');
+    }
+
+    const getWalletBalance = async() => {
+        let abi = colorGuessABI.abi;
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(colorGuessContact, abi, signer);
+        const balance = await contract.getWalletBalance();
+        console.log('balance of wallet is: ' + Number(balance/tempWei));
+    }
 
     const getColor = () => {
         const hexDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B','C','D','E','F'];
@@ -167,7 +170,9 @@ const ColorGuess = () => {
     }
 
     const checkEndOfGame = () => {
-        if(numGuesses === 5){
+        if(numGuesses === 5 || isActive === true){
+            start(0);
+            setGameComplete(true);
             setOutOfGuesses(true);
             alert(`You got ${score} out of 5 correct!`);
             if(score === 5){
@@ -183,7 +188,7 @@ const ColorGuess = () => {
         let abi = colorGuessABI.abi;
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
+        const contract = new ethers.Contract(colorGuessContact, abi, signer);
         const transaction = await contract.payout(difficultyNum);
         console.log('waiting for transaction to finish');
         await transaction.wait();
@@ -194,28 +199,17 @@ const ColorGuess = () => {
         //there is no need to have the player call the contract if they lose
         //becuase there crypto is already in the contract
         //so the contract owner just needs to call the contract to send the crypto to their wallet
+        console.log('you lost your wager');
     }
 
     const startGame = () => {
-        if(!difficulty){
-            alert('Please choose a difficulty!');
-        }
-        else{
+        if(difficulty){
             setReady(true);
-            timer();
-        }
-    }
-
-    const timer = () => {
-        if(time === 0 || numGuesses >= 5){
-            setTime(0);
+            start(30);
+            setGameStarted(true);
         }
         else{
-            setInterval(() => {
-                if(time !== 0){
-                    setTime(time - 1);
-                }
-            }, 1000)
+            alert('Please choose a difficulty!');
         }
     }
 
@@ -253,7 +247,15 @@ const ColorGuess = () => {
                         <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('hard')}>HARD</button>
                         <button className={style.colorGuessBtn} onClick={() => handleSetDifficulty('impossible')}>IMPOSSIBLE</button>
                     </div>) : (
-                        time === 0 ? (<div className={style.timer}>GAME OVER</div>) :( <div className={style.timer}>Time Left: {time} Seconds</div>)
+                        gameComplete ? (<div className={style.timer}>GAME OVER</div>) : (
+                            gameStarted ? (
+                                seconds === 0 ?  (<div className={style.timer}>Game Over!</div>) : (
+                                    <div className={style.timer}>Time Left: {seconds} Seconds</div>
+                                )
+                            ) : (
+                                <div className={style.timer}>Get Ready!</div>
+                            )
+                        )
                     )}
                     <div className={style.displayColorContainer} style={{background: color}}/>
                         <div className={style.colorGuessContainer}>
@@ -272,7 +274,7 @@ const ColorGuess = () => {
                                 <div className={style.scoreIndicator} id='5'/>
                             </div>
                         </div>
-                        {time === 0 || outOfGuesses === true ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
+                        {outOfGuesses === true ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
                         (ready === true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
                 </div>
                 <div className={style.leaderBoardContainer}>
