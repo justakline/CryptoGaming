@@ -23,6 +23,7 @@ const ColorGuess = () => {
     const [difficulty, setDifficulty] = useState('');
     const [gameComplete, setGameComplete] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
+    const [finished, setFinished] = useState(false);
 
     useEffect(() => {
         if((seconds === 0 && isActive) || guesses === 5){
@@ -71,6 +72,10 @@ const ColorGuess = () => {
             setGuesses(guesses + 1);
             if(guessedColor === color){
                 setScore(score + 1);
+                document.getElementById(`${guesses + 1}`).style.backgroundColor = 'green';
+            }
+            else{
+                document.getElementById(`${guesses + 1}`).style.backgroundColor = 'red';
             }
             checkEndGame();
         }
@@ -82,7 +87,9 @@ const ColorGuess = () => {
     const checkEndGame = () => {
         if(guesses === 5){
             setGuesses(6);
+            start(0);
             alert('Game Over - Score: ' + score);
+            setFinished(true);
             setGameComplete(true);
         }
         else{
@@ -106,11 +113,16 @@ const ColorGuess = () => {
     }
 
     const startGame = () => {
-        start(30);
-        setColor('#' + handleSetColor());
-        setReady(true);
-        setGameStarted(true);
-        checkEndGame();
+        if(!difficulty){
+            alert('Please select a difficulty');
+        }
+        else{
+            start(30);
+            setColor('#' + handleSetColor());
+            setReady(true);
+            setGameStarted(true);
+            checkEndGame();
+        }
     }
 
     return(
@@ -143,11 +155,13 @@ const ColorGuess = () => {
                 )}
                 <div className={style.displayColorContainer} style={{background: color}}/>
                     <div className={style.colorGuessContainer}>
-                        {colorOptions.map((color) => {
-                            return(
-                                <button className={style.colorGuessBtn} key={color} style={{visibility: guesses === 5 ? 'hidden' : 'visible'}} onClick={() => handleColorSelection(color)}>{color}</button>
-                            )
-                        })}
+                        {seconds === 0 || finished ? (null) : (
+                            colorOptions.map((color) => {
+                                return(
+                                    <button className={style.colorGuessBtn} key={color} style={{visibility: guesses === 5 ? 'hidden' : 'visible'}} onClick={() => handleColorSelection(color)}>{color}</button>
+                                )
+                            })
+                        )}
                     </div>
                     <div className={style.scoreContainer}>
                         <div className={style.scoreBox}>
@@ -158,7 +172,7 @@ const ColorGuess = () => {
                             <div className={style.scoreIndicator} id='5'/>
                         </div>
                     </div>
-                    {guesses === 5 ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
+                    {finished ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
                     (ready === true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
             </div>
             <div className={style.leaderBoardContainer}>
