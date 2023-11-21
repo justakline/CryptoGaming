@@ -21,9 +21,12 @@ const ColorGuess = () => {
     const [score, setScore] = useState(0);
     const {seconds, start, isActive} = useCountdown();
     const [difficulty, setDifficulty] = useState('');
+    const [numDifficulty, setNumDifficulty] = useState(0);
     const [gameComplete, setGameComplete] = useState(false);
     const [gameStarted, setGameStarted] = useState(false);
     const [finished, setFinished] = useState(false);
+    const [wager, setWager] = useState(0);
+    const [hasWagered, setHasWagered] = useState(false);
 
     useEffect(() => {
         if((seconds === 0 && isActive) || guesses === 5){
@@ -105,11 +108,37 @@ const ColorGuess = () => {
 
     const handleSetDifficulty = (difficulty) => {
         setDifficulty(difficulty);
+        if(difficulty === 'easy'){
+            setNumDifficulty(2);
+        }
+        else if(difficulty === 'medium'){
+            setNumDifficulty(3);
+        }
+        else if(difficulty === 'hard'){
+            setNumDifficulty(4);
+        }
+        else if(difficulty === 'impossible'){
+            setNumDifficulty(5);
+        }
     }
 
     const handleSetColor = () => {
         const hexDigits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A','B','C','D','E','F'];
         return new Array(6).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+    }
+
+    const handleSetWager = (wager) => {
+        setWager(wager);
+    }
+
+    const handleSubmitWager = () => {
+        if(wager <= 0 || wager > .05){
+            alert('Please enter a wager between 0 and .05');
+        }
+        else{
+            setHasWagered(true);
+            console.log('wager: ', wager);
+        }
     }
 
     const startGame = () => {
@@ -125,15 +154,22 @@ const ColorGuess = () => {
         }
     }
 
+    {/* <input type="number" placeholder="Wager" onChange={(e) => handleWager(e.target.value)}></input>
+                <button onClick={() => submitWager()}>Wager</button>
+                <button onClick={() => getBalance()}>Get Balance</button> */}
+                {/* <button onClick={() => loadContract()}>Load Contract</button> */}
+
     return(
         <div>
         <Header address={address} />
         <div className={style.gameContainer}>
             <div>
-                {/* <input type="number" placeholder="Wager" onChange={(e) => handleWager(e.target.value)}></input>
-                <button onClick={() => submitWager()}>Wager</button>
-                <button onClick={() => getBalance()}>Get Balance</button> */}
-                {/* <button onClick={() => loadContract()}>Load Contract</button> */}
+                {hasWagered ? (<h2 style={{color: 'white'}}>Wager ${wager}</h2>) : (
+                    <div id='wager'>
+                        <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>
+                        <button onClick={() => handleSubmitWager()}>Wager</button>
+                    </div>
+                )}
                 {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
                 {!difficulty ? (
                 <div className={style.colorGuessContainer}>
