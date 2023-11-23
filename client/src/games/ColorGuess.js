@@ -47,26 +47,27 @@ const ColorGuess = () => {
             return firstTwoDigits.concat(restOfDigits);
         }
         else if(difficulty === 'hard'){
-            let firstFiveDigits = myColor[1] + myColor[2] + myColor[3] + myColor[4];
+            let firstFourDigits = myColor[1] + myColor[2] + myColor[3] + myColor[4];
             let restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
-            let finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            let finalArray = '#' + firstFourDigits.concat(restOfDigits);
             while(finalArray === color){
                 restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
-                finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+                finalArray = '#' + firstFourDigits.concat(restOfDigits);
             }
             let returnArray = finalArray.split('#').pop();
             return returnArray;
         }
         else if(difficulty === 'impossible'){
+            console.log('colorOptions[1]: ', colorOptions[1]);
             let firstFiveDigits = myColor[1] + myColor[2] + myColor[3] + myColor[4] + myColor[5];
             let restOfDigits = new Array(1).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
             let finalArray = '#' + firstFiveDigits.concat(restOfDigits);
-            while(finalArray === color){
+            while(finalArray === color || finalArray === colorOptions[1]){
                 restOfDigits = new Array(1).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
                 finalArray = '#' + firstFiveDigits.concat(restOfDigits);
             }
-            let returnArray = finalArray.split('#').pop();
-            return returnArray;
+            // let returnArray = finalArray.split('#').pop();
+            return finalArray;
         }
     }
 
@@ -142,8 +143,11 @@ const ColorGuess = () => {
     }
 
     const startGame = () => {
-        if(!difficulty){
-            alert('Please select a difficulty');
+        console.log('difficulty: ', difficulty);
+        console.log('hasWagered: ', hasWagered);
+        console.log(!difficulty && hasWagered == false);
+        if(!difficulty || hasWagered == false){
+            !difficulty ? alert('Please choose a difficulty') : alert('Please wager');
         }
         else{
             start(30);
@@ -164,7 +168,7 @@ const ColorGuess = () => {
         <Header address={address} />
         <div className={style.gameContainer}>
             <div>
-                {hasWagered ? (<h2 style={{color: 'white'}}>Wager ${wager}</h2>) : (
+                {hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
                     <div id='wager'>
                         <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>
                         <button onClick={() => handleSubmitWager()}>Wager</button>
