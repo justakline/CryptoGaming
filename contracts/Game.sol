@@ -11,7 +11,7 @@ contract Game {
     }
 
     //this is for ColorGuess payWinner
-    function payWinner(uint256 _difficulty) public payable virtual {
+    function payWinner(uint256 _difficulty, MainContract _contract) public payable virtual {
         //Needs to be overrideen by subcontracts
     }
 
