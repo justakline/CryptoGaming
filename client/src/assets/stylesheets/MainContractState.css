@@ -7,8 +7,8 @@
 }
 
 .current-game-container{
-    width: 25em;
-    height: 20em;
+    width: auto;
+    height: auto;
     background-color: #5C5C5C;
     margin: 2em;
     border: 3px solid black;
@@ -28,9 +28,15 @@
     font-size: 24px;
 }
 
+.game-entry{
+    color: white;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
 .all-games-container{
-    width: 25em;
-    height: 20em;
+    width: auto;
+    height: auto;
     background-color: #5C5C5C;
     margin: 2em;
     border: 3px solid black;
@@ -48,4 +54,10 @@
     font-weight: bold;
     color: white;
     font-size: 24px;
+}
+
+.games-entry{
+    color: white;
+    margin-right: 1em;
+    margin-left: 1em;
 }

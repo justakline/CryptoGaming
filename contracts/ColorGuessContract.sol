@@ -17,19 +17,23 @@ contract ColorGuess {
         owner = payable(tx.origin);
     }
 
-    function wager(MainContract _contract) public payable{
+    function wager(MainContract _contract, uint256 _difficulty) public payable{
         require(msg.sender.balance >= msg.value, "You must have enough funds to wager");
         require(msg.value > 0, "You must wager more than 0");
         require(players[msg.sender].hasBet == false, "You have already wagered and did not report your lost. Failure to do so results in not being able to play again!");
         players[msg.sender] = Player(payable(msg.sender), msg.value, true);
         ColorGuessTempContract temp = new ColorGuessTempContract();
+        temp.setWagerAmmount(msg.value);
+        temp.setPlayer(msg.sender);
+        temp.setDifficulty(_difficulty);
         _contract.addColorGuessCurrentGame(msg.sender, temp);
+        _contract.addPlayer(msg.sender);
     }
 
     function payWinner(uint256 _difficulty, MainContract _contract, ColorGuessLeaderboardContract _leaderboard, uint256 _score) public payable {
         require(players[msg.sender].hasBet, "You must have wagered to collect");
         require(players[msg.sender].wagerAmmount > 0, "You must wager more than 0");
-        require(_difficulty > 0 && _difficulty < 5, "Difficulty must be greater than 0");
+        require(_difficulty > 0 && _difficulty < 6, "Difficulty must be greater than 0");
         uint256 payoutAmmount = players[msg.sender].wagerAmmount * _difficulty;
         payable(msg.sender).transfer(payoutAmmount);
         players[msg.sender].hasBet = false;
@@ -41,7 +45,6 @@ contract ColorGuess {
 
     function losingWager(MainContract _contract, ColorGuessLeaderboardContract _leaderboard, uint256 _score) public{
         require(players[msg.sender].hasBet, "You must have wagered to collect");
-        payable(owner).transfer(players[msg.sender].wagerAmmount);
         players[msg.sender].hasBet = false;
         players[msg.sender].wagerAmmount = 0;
         _contract.updatePlayer(1, 0, msg.sender);

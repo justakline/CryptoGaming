@@ -61,7 +61,7 @@ const Home = () => {
         <div>
             <Header address={address} handleLinkWallet={handleLinkWallet} />
             <GameSelector handleNavigation={handleNavigation} />
-            {address ? (<MainContractState address={address} />) : (null)}
+            <MainContractState address={address} />
         </div>
     )
 }

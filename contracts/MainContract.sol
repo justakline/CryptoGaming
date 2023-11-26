@@ -49,6 +49,10 @@ contract MainContract{
         return currentGames;
     }
 
+    function getGamesPlayed() public view returns(Game[] memory){
+        return gamesPlayed;
+    }
+
     function removeCurrentGame(Game game) public {
         //There is no indexOf or remove, so just iterate through the array and find the game
         //And replace it with the last one, thereby removing it
@@ -109,9 +113,10 @@ contract MainContract{
         players[msg.sender].profilePicture = _profilePicture;
     }
 
-    function addPlayer() public {
-        require(players[msg.sender].exists == false, "Player already exists");
-        players[msg.sender].exists = true;
+    function addPlayer(address _player) public {
+        if(players[_player].exists == false){
+            players[_player] = Player("", 0, 0, Game(address(0)), true);
+        }
     }
 
     //a universal function to update the player's stats regardless of game played
