@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Header from '../components/header';
 import GameSelector from '../components/GameSelector';
+import MainContractState from '../components/MainContractState';
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -25,6 +26,7 @@ const Home = () => {
                 const account = accounts[0];
                 setAddressAuthenticated(true)
                 setAddress(account);
+                fetchCurrentGames();
             }
             else{
                 console.log("no account found!");
@@ -33,6 +35,10 @@ const Home = () => {
         catch(err){
             console.log(err);
         }
+    }
+
+    const fetchCurrentGames = async() => {
+        console.log('fetching current games')
     }
 
     const handleNavigation = (page) => {
@@ -55,6 +61,7 @@ const Home = () => {
         <div>
             <Header address={address} handleLinkWallet={handleLinkWallet} />
             <GameSelector handleNavigation={handleNavigation} />
+            <MainContractState address={address} />
         </div>
     )
 }

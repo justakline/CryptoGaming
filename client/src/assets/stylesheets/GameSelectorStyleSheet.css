@@ -11,7 +11,8 @@
     border-left: 3px solid black;
     border-radius: 15px;
     border: 1px solid;
-    animation: colorCycle 5s infinite;
+    border-color: white;
+    /* animation: colorCycle 5s infinite; */
 }
 
 .game-select-button{

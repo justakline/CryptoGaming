@@ -5,7 +5,6 @@ const Header = (props) => {
     return (
         <div className='nav-header-container'>
             <div className='nav-wallet-container'>
-                {/* <p className='wallet-address'>no address linked</p> */}
             </div>
             <h3 className='site-name'>Crypto Gamers</h3>
             <div className='nav-wallet-container'>

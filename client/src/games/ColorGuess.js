@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import colorGuessABI from '../assets/abi_files/ColorGuessABI_Files/ColorGuess.json';
 import colorGuessLeaderboardABI from '../assets/abi_files/ColorGuessABI_Files/ColorGuessLeaderboardContract.json';
 import useCountdown from '../hooks/useCountDown';
+import MoonLoader from "react-spinners/MoonLoader";
 
 //EASY: All hex colors are different. pays 1:1
 //MEDIUM: 1 Chunk of the hex values are the same. pays 2:1
@@ -29,13 +30,15 @@ const ColorGuess = () => {
     const [wager, setWager] = useState(0);
     const [hasWagered, setHasWagered] = useState(false);
 
-    const [accout, setAccount] = useState('');
+    const [placingWager, setPlacingWager] = useState(false);
+
+    const [account, setAccount] = useState('');
     const [leaderboardList, setLeaderboardList] = useState([]);
 
-    const mainContract = "0xaED8D4234A278B7043393cDA2D341e82C46Fb699";
-    const colorGuessLeaderboard = "0x3178238554fc559cc406e8060784b81EF527EAd4"
-    const tempColorGuess = "0x229AfB210E1a5b742df07d11052554fE35dB163b";
-    const colorGuessContract = "0x259124FFD6F15d9b40819Bda5ACb75b7f04cB17e";
+    const mainContract = "0x1e4d96d215bcab7329D37BBFAa116dB77cc7ddBb";
+    const colorGuessLeaderboard = "0xfa40Fb99EAbFE96a020Ca04d48471D81D75d43d8"
+    const tempColorGuess = "0x348299628E1C13f67D86080DDb3FD208B4aa1Df2";
+    const colorGuessContract = "0xb951E13fa853967190FD240107AD2f1e627a675a";
 
     //this only runs once when the page is loaded
     useEffect(() => {
@@ -226,7 +229,7 @@ const ColorGuess = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(colorGuessContract, abi, signer);
-        const wager = .1;
+        const wager = .2;
         const wagerFixed = ethers.FixedNumber.from(wager.toString());
         const transaction = await contract.loadContractBalance({value: ethers.utils.parseEther(wagerFixed.toString())});
         console.log('waiting for transaction to finish');
@@ -245,12 +248,14 @@ const ColorGuess = () => {
             const signer = provider.getSigner();
             const contract = new ethers.Contract(colorGuessContract, abi, signer);
             const wagerFixed = ethers.FixedNumber.from(wager.toString());
+            setPlacingWager(true);
             const transaction = await contract.wager(mainContract, {value: ethers.utils.parseEther(wagerFixed.toString())});
             console.log('waiting for transaction to finish');
             await transaction.wait();
             console.log('transaction finished');
             setHasWagered(true);
             console.log('wager: ', wager);
+            setPlacingWager(false);
         }
     }
 
@@ -274,11 +279,13 @@ const ColorGuess = () => {
             <button onClick={() => loadContract()}>load contract</button>
             <button onClick={() => fetchLeaderboard()}>fetch leaderboard</button>
             <div>
-                {hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
+                {placingWager ? (<MoonLoader color={'#ffffff'} />) : (
+                    hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
                     <div id='wager'>
                         <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>
                         <button onClick={() => handleWager()}>Wager</button>
                     </div>
+                )
                 )}
                 {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
                 {!difficulty ? (
@@ -319,23 +326,30 @@ const ColorGuess = () => {
                         </div>
                     </div>
                     {finished ? <button className={style.startBtn} onClick={() => window.location.reload()}>RESTART</button> : 
-                    (ready === true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
+                    (ready === true || placingWager == true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
             </div>
-            <div className={style.leaderBoardContainer}>
-                <p>Leaderboard</p>
-                <div>
+            <div>
+                <div className={style.leaderBoardContainer}>
+                    <p>Leaderboard</p>
                     {leaderboardList.map((player, index) => {
                         console.log('player: ', player[0]);
                         console.log('index: ', index)
-                        if(index == 0){
+                        if(player[0] === '0x0000000000000000000000000000000000000000'){
                             return(
-                                <p className={style.numberOneEntry} >{player[0]} | score: {player[1]._hex}</p>
+                                ''
                             )
                         }
                         else{
-                            return(
-                                <p>{player[0]} | score: {player[1]._hex}</p>
-                            )
+                            if(index == 0){
+                                return(
+                                    <p className={style.numberOneEntry} >{player[0]} | score: {parseInt(player[1]._hex, 16)}</p>
+                                )
+                            }
+                            else{
+                                return(
+                                    <p>{player[0]} | score: {parseInt(player[1]._hex, 16)}</p>
+                                )
+                            }
                         }
                     })}
                 </div>
