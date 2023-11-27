@@ -229,7 +229,7 @@ const ColorGuess = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(colorGuessContract, abi, signer);
-        const wager = .2;
+        const wager = .1;
         const wagerFixed = ethers.FixedNumber.from(wager.toString());
         const transaction = await contract.loadContractBalance({value: ethers.utils.parseEther(wagerFixed.toString())});
         console.log('waiting for transaction to finish');
@@ -249,7 +249,7 @@ const ColorGuess = () => {
             const contract = new ethers.Contract(colorGuessContract, abi, signer);
             const wagerFixed = ethers.FixedNumber.from(wager.toString());
             setPlacingWager(true);
-            const transaction = await contract.wager(mainContract, {value: ethers.utils.parseEther(wagerFixed.toString())});
+            const transaction = await contract.wager(mainContract, numDifficulty, {value: ethers.utils.parseEther(wagerFixed.toString())});
             console.log('waiting for transaction to finish');
             await transaction.wait();
             console.log('transaction finished');
@@ -279,14 +279,6 @@ const ColorGuess = () => {
             <button onClick={() => loadContract()}>load contract</button>
             <button onClick={() => fetchLeaderboard()}>fetch leaderboard</button>
             <div>
-                {placingWager ? (<MoonLoader color={'#ffffff'} />) : (
-                    hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
-                    <div id='wager'>
-                        <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>
-                        <button onClick={() => handleWager()}>Wager</button>
-                    </div>
-                )
-                )}
                 {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
                 {!difficulty ? (
                 <div className={style.colorGuessContainer}>
@@ -305,6 +297,14 @@ const ColorGuess = () => {
                             <div className={style.timer}>Get Ready!</div>
                         )
                     )
+                )}
+                {placingWager ? (<MoonLoader color={'#ffffff'} />) : (
+                    hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
+                    <div id='wager'>
+                        <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>
+                        <button onClick={() => handleWager()}>Wager</button>
+                    </div>
+                )
                 )}
                 <div className={style.displayColorContainer} style={{background: color}}/>
                     <div className={style.colorGuessContainer}>

@@ -1,9 +1,9 @@
 .game-container{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     background-color: none;
     height: auto;
-    width: 50%;
+    width: 55%;
 }
 
 .current-game-container{
