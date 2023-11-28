@@ -10,6 +10,8 @@ const GameStateModal = (props) => {
     const [difficulty, setDifficulty] = useState();
     const [player, setPlayer] = useState();
     const [wager, setWager] = useState();
+    const [status, setStatus] = useState();
+    const [gameName, setGameName] = useState();
     const [error, setError] = useState(false);
 
     const tempWei = 1000000000000000000;
@@ -41,6 +43,14 @@ const GameStateModal = (props) => {
                 temp = await contract.getPlayer();
                 setPlayer(temp.toString());
                 console.log('player ' + temp);
+
+                temp = await contract.getStatus();
+                setStatus(temp.toString());
+                console.log('status ' + temp);
+
+                temp = await contract.getGameName();
+                setGameName(temp.toString());
+                console.log('game name ' + temp);
             }
             catch(err){
                 setError(true);
@@ -62,9 +72,11 @@ const GameStateModal = (props) => {
                 ) : (
                     <div>
                         <h2 onClick={props.handleClose}>Game: {props.game}</h2>
+                        <h3>Game: {gameName}</h3>
                         <h3>Difficulty: {difficulty}</h3>
                         <h3>Player: {player}</h3>
                         <h3>Wager: {wager}</h3>
+                        <h3>Status: {status}</h3>
                     </div>
                 )}
             </div>

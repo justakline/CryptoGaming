@@ -6,7 +6,7 @@ import GameStateModal from './GameStatModal';
 
 const MainContractState = (props) => {
 
-    const mainContract = '0xEA1A1C0d576E1aF072c4FE96A66A4f76B8C7325b'
+    const mainContract = '0xEDdede02b21e6747E34415a31500fe917eD2442f'
 
     const [currentGames, setCurrentGames] = useState([]);
     const [gameHistory, setGameHistory] = useState([]);

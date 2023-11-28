@@ -35,10 +35,10 @@ const ColorGuess = () => {
     const [account, setAccount] = useState('');
     const [leaderboardList, setLeaderboardList] = useState([]);
 
-    const mainContract = "0xEA1A1C0d576E1aF072c4FE96A66A4f76B8C7325b";
-    const colorGuessLeaderboard = "0xAb5c9beCEfA9C734Dd443e9644f7F928A134ba56"
-    const tempColorGuess = "0xD17D6946F50bFae3d1398A115814D754D882770e";
-    const colorGuessContract = "0x899BF4B35ebF083dd00230925508Ccf67d890eBb";
+    const mainContract = "0xEDdede02b21e6747E34415a31500fe917eD2442f";
+    const colorGuessLeaderboard = "0xEDcDC47B7fCC83C6E275aE1Af4d966F37dF3bED7"
+    const tempColorGuess = "0xA38D7F6d0b713c2E71bB8aDf88B8E767f4dE4292";
+    const colorGuessContract = "0x7D9BD636e780E562c96b3375750c90168D4E7897";
 
     //this only runs once when the page is loaded
     useEffect(() => {
@@ -229,7 +229,7 @@ const ColorGuess = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(colorGuessContract, abi, signer);
-        const wager = .1;
+        const wager = .2;
         const wagerFixed = ethers.FixedNumber.from(wager.toString());
         const transaction = await contract.loadContractBalance({value: ethers.utils.parseEther(wagerFixed.toString())});
         console.log('waiting for transaction to finish');
