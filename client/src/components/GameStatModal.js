@@ -76,7 +76,7 @@ const GameStateModal = (props) => {
                         <h3>Difficulty: {difficulty}</h3>
                         <h3>Player: {player}</h3>
                         <h3>Wager: {wager}</h3>
-                        <h3>Status: {status}</h3>
+                        <h3>Outcome: {status}</h3>
                     </div>
                 )}
             </div>

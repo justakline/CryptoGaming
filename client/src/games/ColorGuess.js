@@ -238,24 +238,29 @@ const ColorGuess = () => {
     }
 
     const handleWager = async() => {
-        if(wager <= 0 || wager > .05){
-            alert('Please enter a wager between 0 and .05');
+        if(!wager){
+            alert('Please choose a difficulty before wagering');
         }
         else{
-            const {ethereum} = window;
-            let abi = colorGuessABI.abi;
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-            const contract = new ethers.Contract(colorGuessContract, abi, signer);
-            const wagerFixed = ethers.FixedNumber.from(wager.toString());
-            setPlacingWager(true);
-            const transaction = await contract.wager(mainContract, numDifficulty, {value: ethers.utils.parseEther(wagerFixed.toString())});
-            console.log('waiting for transaction to finish');
-            await transaction.wait();
-            console.log('transaction finished');
-            setHasWagered(true);
-            console.log('wager: ', wager);
-            setPlacingWager(false);
+            if(wager <= 0 || wager > .05){
+                alert('Please enter a wager between 0 and .05');
+            }
+            else{
+                const {ethereum} = window;
+                let abi = colorGuessABI.abi;
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                const signer = provider.getSigner();
+                const contract = new ethers.Contract(colorGuessContract, abi, signer);
+                const wagerFixed = ethers.FixedNumber.from(wager.toString());
+                setPlacingWager(true);
+                const transaction = await contract.wager(mainContract, numDifficulty, {value: ethers.utils.parseEther(wagerFixed.toString())});
+                console.log('waiting for transaction to finish');
+                await transaction.wait();
+                console.log('transaction finished');
+                setHasWagered(true);
+                console.log('wager: ', wager);
+                setPlacingWager(false);
+            }
         }
     }
 
@@ -300,9 +305,9 @@ const ColorGuess = () => {
                 )}
                 {placingWager ? (<MoonLoader color={'#ffffff'} />) : (
                     hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
-                    <div id='wager'>
+                    <div id='wager' className={style.wager}>
                         <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>
-                        <button onClick={() => handleWager()}>Wager</button>
+                        <button className={style.colorGuessBtn} onClick={() => handleWager()}>Wager</button>
                     </div>
                 )
                 )}
@@ -330,7 +335,7 @@ const ColorGuess = () => {
             </div>
             <div>
                 <div className={style.leaderBoardContainer}>
-                    <p>Leaderboard</p>
+                    <h2 className={style.myH2}>Leaderboard</h2>
                     {leaderboardList.map((player, index) => {
                         console.log('player: ', player[0]);
                         console.log('index: ', index)
@@ -342,12 +347,12 @@ const ColorGuess = () => {
                         else{
                             if(index == 0){
                                 return(
-                                    <p className={style.numberOneEntry} >{player[0]} | score: {parseInt(player[1]._hex, 16)}</p>
+                                    <h3 className={style.numberOneEntry} >{player[0]} | score: {parseInt(player[1]._hex, 16)}</h3>
                                 )
                             }
                             else{
                                 return(
-                                    <p>{player[0]} | score: {parseInt(player[1]._hex, 16)}</p>
+                                    <h4>{player[0]} | score: {parseInt(player[1]._hex, 16)}</h4>
                                 )
                             }
                         }

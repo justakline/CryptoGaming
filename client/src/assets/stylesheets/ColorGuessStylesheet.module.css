@@ -153,7 +153,8 @@ body{
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    animation: colorCycle 5s infinite;
+    border-color: white;
+    /* animation: colorCycle 5s infinite; */
 }
 
 .leaderBoardEntry{
@@ -184,4 +185,17 @@ body{
     70% {border-color: yellow;}
     84% {border-color: orange;}
     100% {border-color: red;}
+}
+
+.wager{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: blue; */
+}
+
+.myH2{
+    color: white;
 }
