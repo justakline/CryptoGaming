@@ -56,6 +56,9 @@ const Home = () => {
         else if(page === 'tic-tac-toe'){
             navigate('/tic-tac-toe', {state: {address}});
         }
+        else if(page === 'game-suggestion'){
+            navigate('/game-suggestion', {state: {address}});
+        }
     }
 
     return (

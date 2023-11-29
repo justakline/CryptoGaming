@@ -33,6 +33,21 @@
     background-color: #0B5F4D;
 }
 
+.suggest-game-button{
+    width: 15%;
+    height: 75%;
+    padding: 1%;
+    background-color: #04b315;
+    border-radius: 15px;
+    border: 2px black solid;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    display: inline-flex;
+    margin: 5px;
+    white-space: nowrap;
+}
+
 @keyframes colorCycle {
     0% {border-color: red;}
     25% {border-color: orange;}
