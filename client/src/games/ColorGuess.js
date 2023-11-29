@@ -7,6 +7,7 @@ import colorGuessABI from '../assets/abi_files/ColorGuessABI_Files/ColorGuess.js
 import colorGuessLeaderboardABI from '../assets/abi_files/ColorGuessABI_Files/ColorGuessLeaderboardContract.json';
 import useCountdown from '../hooks/useCountDown';
 import MoonLoader from "react-spinners/MoonLoader";
+import ColorGuessRulesModal from '../components/ColorGuessRulesModal';
 
 //EASY: All hex colors are different. pays 1:1
 //MEDIUM: 1 Chunk of the hex values are the same. pays 2:1
@@ -34,6 +35,10 @@ const ColorGuess = () => {
 
     const [account, setAccount] = useState('');
     const [leaderboardList, setLeaderboardList] = useState([]);
+
+    const [gameRules, setGameRules] = useState('');
+
+    const[showModal, setShowModal] = useState(false);
 
     const mainContract = "0xEDdede02b21e6747E34415a31500fe917eD2442f";
     const colorGuessLeaderboard = "0xEDcDC47B7fCC83C6E275aE1Af4d966F37dF3bED7"
@@ -274,16 +279,38 @@ const ColorGuess = () => {
         setLeaderboardList(leaderboard);
     }
 
-    console.log('leaderboard list: ' + leaderboardList[0])
+    const handleGetGameRules = async() => {
+        console.log('inside handleGetGameRules');
+        try{
+            // const hash = 'bafkreidzta7xekkvyavsrktnch4aa23rkpvnw2ei7ft2ibpzhtxmh7gnli';
+            const url = `https://gateway.pinata.cloud/ipfs/bafkreidzta7xekkvyavsrktnch4aa23rkpvnw2ei7ft2ibpzhtxmh7gnli`;
+            console.log('awaiting response')
+            const response = await fetch(url);
+            console.log('done awaiting response, awaiting data');
+            let data = await response.text();
+            console.log('done awaiting data');
+            console.log(data);
+            setGameRules(data);
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
+    const handleCloseModal = () => {
+        setGameRules('');
+    }
 
     return(
         <div>
         <Header address={address} />
+        {gameRules && (<ColorGuessRulesModal gameRules={gameRules} handleCloseModal={handleCloseModal} />) }
         <div className={style.gameContainer}>
             {/* <button onClick={() => getBalance()}>Get Balance</button> */}
             <button onClick={() => loadContract()}>load contract</button>
             <button onClick={() => fetchLeaderboard()}>fetch leaderboard</button>
             <div>
+                <button onClick={() => handleGetGameRules()} className={style.startBtn}>Not sure how to play?</button>
                 {!difficulty ? (<h1 style={{color: 'white'}}>Choose a difficulty</h1>) : <h1 style={{color: 'white'}}>Difficulty: {difficulty}</h1> }
                 {!difficulty ? (
                 <div className={style.colorGuessContainer}>
@@ -337,8 +364,6 @@ const ColorGuess = () => {
                 <div className={style.leaderBoardContainer}>
                     <h2 className={style.myH2}>Leaderboard</h2>
                     {leaderboardList.map((player, index) => {
-                        console.log('player: ', player[0]);
-                        console.log('index: ', index)
                         if(player[0] === '0x0000000000000000000000000000000000000000'){
                             return(
                                 ''
