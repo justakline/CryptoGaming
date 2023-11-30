@@ -330,7 +330,11 @@ const ColorGuess = () => {
                         )
                     )
                 )}
-                {placingWager ? (<MoonLoader color={'#ffffff'} />) : (
+                {placingWager ? (
+                    <div className={style.centerStuff}>
+                        <MoonLoader color={'#ffffff'} />
+                    </div>
+                ) : (
                     hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
                     <div id='wager' className={style.wager}>
                         <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>

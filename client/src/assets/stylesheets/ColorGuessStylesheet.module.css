@@ -199,3 +199,10 @@ body{
 .myH2{
     color: white;
 }
+
+.centerStuff{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
