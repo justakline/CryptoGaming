@@ -5,9 +5,9 @@
   background: #4fd9a2;
   color:  black;
   border: 2px solid #a94442;
-  width: 200px;
-  height: 200px;
-  font-size: 75px;
+  width: 120px;
+  height: 120px;
+  font-size: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +22,7 @@
 
 /* Style the status text */
 .status {
-  font-size: 75px;
+  font-size: 50px;
   margin: 0;
   text-align: center;
   color: black;
@@ -80,6 +80,45 @@ button:hover {
   flex-direction: column;
   align-items: center;
   border: 0px solid rgb(85, 85, 85);
-  border-radius: 25px;
+  border-radius: 50px;
+  padding: 10px;
+}
+
+/* Style the wager section */
+.wager-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0px; /* Adjust the margin as needed */
+  color: red;
+}
+
+/* Style the input and button in the wager section */
+.wager-section input {
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 5px; /* Adjust margin as needed */
+  align-self: center; /* Align input to the left */
   padding: 5px;
 }
+
+/* Style the leaderboard section */
+.leaderboard-section {
+  display: flex;
+  font-size: 20px;
+  flex-direction: column;
+  align-items: center; /* Align leaderboard to the left */
+  margin-bottom: 0px; /* Adjust the margin as needed */
+  color: blue;
+  background-color: #ffc0cb; /* Add your preferred background color here */
+  padding: 10px; /* Add padding to give some space around the content */
+  border-radius: 10px; /* Add border-radius for rounded corners */
+}
+
+/* Add styles for leaderboard entries if necessary */
+.leaderboard-entry {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+
