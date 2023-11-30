@@ -59,6 +59,14 @@ const Home = () => {
         else if(page === 'game-suggestion'){
             navigate('/game-suggestion', {state: {address}});
         }
+        else if(page === 'your-account'){
+            if(address){
+                navigate('/your-account', {state: {address}});
+            }
+            else{
+                alert('Please link your wallet first!');
+            }
+        }
     }
 
     return (

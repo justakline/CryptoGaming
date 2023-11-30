@@ -8,6 +8,7 @@ const GameSelector = (props) => {
             <button className='game-select-button' onClick={() => {props.handleNavigation('word-search')}}>Word Search</button>
             <button className='game-select-button' onClick={() => {props.handleNavigation('tic-tac-toe')}}>Tic-Tac-Toe</button>
             <button className='suggest-game-button' onClick={() => {props.handleNavigation('game-suggestion')}}>Suggest A Game!</button>
+            <button className='suggest-game-button' onClick={() => {props.handleNavigation('your-account')}}>Your Account</button>
         </div>
     )
 }

@@ -1,0 +1,24 @@
+.parent-account-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1%;
+}
+
+.stats-container{
+    width: auto;
+    height: auto;
+    margin: 1%;
+    border: 3px solid black;
+    border-radius: 7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-color: white;
+    background-color: lightblue;
+}
+
+.stats-entry{
+    margin: 1em;
+}

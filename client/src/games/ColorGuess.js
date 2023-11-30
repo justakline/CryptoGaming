@@ -35,6 +35,7 @@ const ColorGuess = () => {
 
     const [account, setAccount] = useState('');
     const [leaderboardList, setLeaderboardList] = useState([]);
+    const [updatingPlayer, setUpdatingPlayer] = useState(false);
 
     const [gameRules, setGameRules] = useState('');
 
@@ -155,25 +156,39 @@ const ColorGuess = () => {
     }
 
     const payWinner = async() => {
-        let abi = colorGuessABI.abi;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(colorGuessContract, abi, signer);
-        const transaction = await contract.payWinner(numDifficulty, mainContract, colorGuessLeaderboard, score);
-        console.log('waiting for transaction to finish');
-        await transaction.wait();
-        console.log('transaction finished, check the wallet!');
+        try{
+            setUpdatingPlayer(true);
+            let abi = colorGuessABI.abi;
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(colorGuessContract, abi, signer);
+            const transaction = await contract.payWinner(numDifficulty, mainContract, colorGuessLeaderboard, score);
+            console.log('waiting for transaction to finish');
+            await transaction.wait();
+            console.log('transaction finished, check the wallet!');
+            setUpdatingPlayer(false);
+        }
+        catch(err){
+            console.log(err);
+        }
     }
 
     const losingWager = async() => {
-        let abi = colorGuessABI.abi;
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(colorGuessContract, abi, signer);
-        const transaction = await contract.losingWager(mainContract, colorGuessLeaderboard, score);
-        console.log('waiting for transaction to finish');
-        await transaction.wait();
-        console.log('transaction finished, thanks for playing!');
+        try{
+            setUpdatingPlayer(true);
+            let abi = colorGuessABI.abi;
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = new ethers.Contract(colorGuessContract, abi, signer);
+            const transaction = await contract.losingWager(mainContract, colorGuessLeaderboard, score);
+            console.log('waiting for transaction to finish');
+            await transaction.wait();
+            console.log('transaction finished, thanks for playing!');
+            setUpdatingPlayer(false);
+        }
+        catch(err){
+
+        }
     }
 
     const handleSetColorOptions = () => {
@@ -365,27 +380,36 @@ const ColorGuess = () => {
                     (ready === true || placingWager == true ? null : <button className={style.startBtn} onClick={startGame}>START</button>) }
             </div>
             <div>
-                <div className={style.leaderBoardContainer}>
-                    <h2 className={style.myH2}>Leaderboard</h2>
-                    {leaderboardList.map((player, index) => {
-                        if(player[0] === '0x0000000000000000000000000000000000000000'){
-                            return(
-                                ''
-                            )
-                        }
-                        else{
-                            if(index == 0){
+            <div>
+                {updatingPlayer ? (
+                    <div className={style.leaderBoardContainer}>
+                        <h2 className={style.myH2}>Leaderboard</h2>
+                        <MoonLoader color={'#ffffff'} />
+                    </div>
+                ) : (
+                    <div className={style.leaderBoardContainer}>
+                        <h2 className={style.myH2}>Leaderboard</h2>
+                        {leaderboardList.map((player, index) => {
+                            if(player[0] === '0x0000000000000000000000000000000000000000'){
                                 return(
-                                    <h3 className={style.numberOneEntry} >{player[0]} | score: {parseInt(player[1]._hex, 16)}</h3>
+                                    ''
                                 )
                             }
                             else{
-                                return(
-                                    <h4>{player[0]} | score: {parseInt(player[1]._hex, 16)}</h4>
-                                )
+                                if(index == 0){
+                                    return(
+                                        <h3 className={style.numberOneEntry} >{player[0]} | score: {parseInt(player[1]._hex, 16)}</h3>
+                                    )
+                                }
+                                else{
+                                    return(
+                                        <h4>{player[0]} | score: {parseInt(player[1]._hex, 16)}</h4>
+                                    )
+                                }
                             }
-                        }
-                    })}
+                        })}
+                    </div>
+                )}
                 </div>
             </div>
         </div>

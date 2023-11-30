@@ -6,6 +6,7 @@ import Checkers from './games/Checkers';
 import WordSearch from './games/WordSearch';
 import TicTacToe from './games/TicTacToe';
 import GameSuggestions from './pages/GameSuggestions';
+import Account from './pages/Account';
 
 const App = () => {
     return(
@@ -19,6 +20,7 @@ const App = () => {
                     <Route exact path="/word-search" element={<WordSearch />} />{" "}
                     <Route exact path="/tic-tac-toe" element={<TicTacToe />} />{" "}
                     <Route exact path="/game-suggestion" element={<GameSuggestions />} />{" "}
+                    <Route exact path="/your-account" element={<Account />} />{" "}
                 </Routes>
             </BrowserRouter>
         </div>
