@@ -1,6 +1,7 @@
 pragma solidity ^0.8.4;
 import "../MainContract.sol";
 import "./Piece.sol";
+import "./PlayerNumber.sol";
 
 contract Board {
     uint public constant boardSize = 8;
@@ -40,5 +41,17 @@ contract Board {
         uint toCol
     ) public {
         Piece piece = board[fromRow][fromCol];
+        board[fromRow][fromCol] = Piece(PlayerNumber.NULL);
+        board[toRow][toCol] = piece;
+        if((piece.belongsTo(PlayerNumber.PLAYER_1) && toRow == 7) || (piece.belongsTo(PlayerNumber.PLAYER_2) && toRow == 0)){
+            piece.makeKing();
+        }
+
+    }
+    function getPiece(int row, int col) public returns (Piece){
+        return board[row][col];
+    } 
+    function getBoard() public  returns  (Piece[][]){
+        return board;
     }
 }
