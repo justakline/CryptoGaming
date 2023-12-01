@@ -7,6 +7,8 @@ const GameSuggestions = () => {
     const [gameName, setGameName] = useState('');
     const [gameDescription, setGameDescription] = useState('');
 
+    const gameSuggestionsContract = '0x48203614dd0B216C44D9FB7f1Eb1fC1273233b5a';
+
     let location = useLocation();
     let address = location.state.address;
     return(

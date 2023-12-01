@@ -9,7 +9,7 @@ const Account = () => {
     let location = useLocation();
     const address = location.state.address;
 
-    const mainContractAddress = '0xEDdede02b21e6747E34415a31500fe917eD2442f';
+    const mainContractAddress = '0xa98EcC81a790A2DC09b54e7646Df51a603c0Ff39';
 
     const[profilePicture, setProfilePicture] = useState('');
     const[numGamesPlayed, setNumGamesPlayed] = useState(0);

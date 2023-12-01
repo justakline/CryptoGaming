@@ -41,10 +41,12 @@ const ColorGuess = () => {
 
     const[showModal, setShowModal] = useState(false);
 
-    const mainContract = "0xEDdede02b21e6747E34415a31500fe917eD2442f";
-    const colorGuessLeaderboard = "0xEDcDC47B7fCC83C6E275aE1Af4d966F37dF3bED7"
-    const tempColorGuess = "0xA38D7F6d0b713c2E71bB8aDf88B8E767f4dE4292";
-    const colorGuessContract = "0x7D9BD636e780E562c96b3375750c90168D4E7897";
+    const [handlePayment, setHandlePayment] = useState(false);
+
+    const mainContract = "0xa98EcC81a790A2DC09b54e7646Df51a603c0Ff39";
+    const colorGuessLeaderboard = "0x2bc875296730Ee24d786d92DF9EEc929a60E308b"
+    const tempColorGuess = "0x200B73C8AA3353B1CC6D3dd72eA0Ee52ad0E1853";
+    const colorGuessContract = "0x1ED5dC0DFA54675EbB4cbf2d8720D60a1D27E5aD";
 
     //this only runs once when the page is loaded
     useEffect(() => {
@@ -167,6 +169,7 @@ const ColorGuess = () => {
             await transaction.wait();
             console.log('transaction finished, check the wallet!');
             setUpdatingPlayer(false);
+            setHandlePayment(true);
         }
         catch(err){
             console.log(err);
@@ -185,6 +188,7 @@ const ColorGuess = () => {
             await transaction.wait();
             console.log('transaction finished, thanks for playing!');
             setUpdatingPlayer(false);
+            setHandlePayment(true);
         }
         catch(err){
 
@@ -350,7 +354,13 @@ const ColorGuess = () => {
                         <MoonLoader color={'#ffffff'} />
                     </div>
                 ) : (
-                    hasWagered ? (<h2 style={{color: 'white'}}>Wagering {wager} sepolia</h2>) : (
+                    hasWagered ? (
+                        !handlePayment ? (
+                            <h2 style={{color: 'white'}} >Wagering {wager} sepolia</h2>
+                        ) : (
+                            <h2 style={{color: 'white'}} >Thanks for playing!</h2>
+                        )
+                    ) : (
                     <div id='wager' className={style.wager}>
                         <input type='number' placeholder="Wager" onChange={(e) => handleSetWager(e.target.value)}></input>
                         <button className={style.colorGuessBtn} onClick={() => handleWager()}>Wager</button>
