@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Header from '../components/header';
 import GameSelector from '../components/GameSelector';
 import MainContractState from '../components/MainContractState';
 import { useNavigate } from "react-router-dom";

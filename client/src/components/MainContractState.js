@@ -3,6 +3,7 @@ import '../assets/stylesheets/MainContractState.css';
 import MainContractABI from '../assets/abi_files/MainContract.json';
 import { ethers } from 'ethers';
 import GameStateModal from './GameStatModal';
+import Globaleaderboard from './GlobalLeaderboard';
 
 const MainContractState = (props) => {
 
@@ -96,6 +97,9 @@ const MainContractState = (props) => {
                     ) : (
                             <p>Connect your wallet to see games being played!</p>
                     )}
+                </div>
+                <div>
+                    <Globaleaderboard address={props.address}/>
                 </div>
             </div>
         </div>
