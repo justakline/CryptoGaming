@@ -19,6 +19,7 @@ const Account = () => {
 
     useEffect(() => {
         try{
+            console.log('address: ', address);
             getInfo();
         }
         catch(err){
@@ -32,21 +33,27 @@ const Account = () => {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
             const contract = new ethers.Contract(mainContractAddress, abi, signer);
-            const transaction = await contract.getPlayerInfo();
-            console.log('profile picture: ', transaction[0]);
-            setProfilePicture(transaction[0]);
-            console.log('num games played: ', parseInt(transaction[1], 16));
-            setNumGamesPlayed(parseInt(transaction[1], 16));
-            console.log('num wins: ', parseInt(transaction[2], 16));
-            setNumWins(parseInt(transaction[2], 16));
-            console.log('current game: ', transaction[3]);
-            setCurrentGame(transaction[3]._hex);
-            setExists(transaction[4]);
-            console.log(typeof transaction[4])
-            console.log('exists: ', transaction[4]);
+            let transaction = await contract.getPlayerList();
+            // address id;
+            // string profilePicture; //holds ipfs hash
+            // uint256 numGamesPlayed;
+            // uint256 numWins;
+            // Game currentGame;
+            // bool exists;
+            console.log('transaction: ', transaction);
+            transaction.forEach(async (player) => {
+                if(player.id.toLowerCase() === address.toLowerCase()){
+                    console.log('found player');
+                    setProfilePicture(player.profilePicture);
+                    setNumGamesPlayed(parseInt(player.numGamesPlayed._hex, 16));
+                    setNumWins(parseInt(player.numWins._hex, 16));
+                    setCurrentGame(player.currentGame);
+                    setExists(player.exists);
+                }
+            })
         }
         catch(err){
-            console.log('error in getInfo');
+            console.log('error in getInfo: ', err);
         }
     }
 

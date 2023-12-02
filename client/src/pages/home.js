@@ -7,8 +7,7 @@ import '../assets/stylesheets/HomePageStyleSheet.css';
 const Home = (props) => {
     //props coming in from App.js: address, addressAuthenticated
 
-    const [address, setAddress] = useState('');
-    const [addressAuthenticated, setAddressAuthenticated] = useState(false);
+    let address = props.address;
 
     let navigate = useNavigate();
 
@@ -21,37 +20,6 @@ const Home = (props) => {
             console.log('your using brave!');
         }
     }, [])
-
-    const handleLinkWallet = async() => {
-        const { ethereum } = window;
-        if(!ethereum){
-            console.log("Make sure you have metamask!");
-            return;
-        }
-
-        try{
-            const accounts = await window.ethereum.request({
-                method: "eth_requestAccounts",
-            });
-            // const accounts = await ethereum.request({method: "eth_accounts"});
-            if(accounts.length !== 0){
-                const account = accounts[0];
-                setAddressAuthenticated(true)
-                setAddress(account);
-                fetchCurrentGames();
-            }
-            else{
-                console.log("no account found!");
-            }
-        }
-        catch(err){
-            console.log(err);
-        }
-    }
-
-    const fetchCurrentGames = async() => {
-        console.log('fetching current games')
-    }
 
     const handleNavigation = (page) => {
         //set up nav logic here
