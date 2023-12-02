@@ -5,11 +5,23 @@ import MainContractState from '../components/MainContractState';
 import { useNavigate } from "react-router-dom";
 import '../assets/stylesheets/HomePageStyleSheet.css';
 
-const Home = () => {
+const Home = (props) => {
+    //props coming in from App.js: address, addressAuthenticated
+
     const [address, setAddress] = useState('');
     const [addressAuthenticated, setAddressAuthenticated] = useState(false);
 
     let navigate = useNavigate();
+
+    useEffect(() => {
+        const isBrave = 'brave' in window.navigator;
+        if(!isBrave){
+            alert("It looks like your not using the Brave browser. Some features may not work as intended.");
+        }
+        else{
+            console.log('your using brave!');
+        }
+    }, [])
 
     const handleLinkWallet = async() => {
         const { ethereum } = window;
@@ -60,7 +72,7 @@ const Home = () => {
             navigate('/game-suggestion', {state: {address}});
         }
         else if(page === 'your-account'){
-            if(address){
+            if(props.address){
                 navigate('/your-account', {state: {address}});
             }
             else{
@@ -71,9 +83,8 @@ const Home = () => {
 
     return (
         <div>
-            <Header address={address} handleLinkWallet={handleLinkWallet} />
             <GameSelector handleNavigation={handleNavigation} />
-            <MainContractState address={address} />
+            <MainContractState address={props.address} />
         </div>
     )
 }

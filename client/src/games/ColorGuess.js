@@ -322,7 +322,6 @@ const ColorGuess = () => {
 
     return(
         <div>
-        <Header address={address} />
         {gameRules && (<ColorGuessRulesModal gameRules={gameRules} handleCloseModal={handleCloseModal} />) }
         <div className={style.gameContainer}>
             {/* <button onClick={() => getBalance()}>Get Balance</button> */}

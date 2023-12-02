@@ -13,7 +13,6 @@ const GameSuggestions = () => {
     let address = location.state.address;
     return(
         <div>
-            <Header address={address}/>
             <div className='parent'>
                 <div className='form-container'>
                     <h1>Have an idea for a game?</h1>
