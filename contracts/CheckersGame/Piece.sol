@@ -21,4 +21,8 @@ contract Piece {
     function belongsTo(PlayerNumber player) public view returns (bool) {
         return playerNumber == player;
     }
+
+    function switchType(PlayerNumber player) public {
+        playerNumber = player;
+    }
 }

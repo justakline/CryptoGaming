@@ -7,7 +7,9 @@ contract Board {
     uint public constant boardSize = 8;
     Piece[][] public board;
 
-    constructor() {}
+    constructor() {
+        board = createBoard();
+    }
 
     function createBoard() private returns (Piece[][] memory) {
         Piece[boardSize][boardSize] memory tempBoard;
@@ -41,17 +43,21 @@ contract Board {
         uint toCol
     ) public {
         Piece piece = board[fromRow][fromCol];
-        board[fromRow][fromCol] = Piece(PlayerNumber.NULL);
+        board[fromRow][fromCol] = new Piece(PlayerNumber.NULL);
         board[toRow][toCol] = piece;
-        if((piece.belongsTo(PlayerNumber.PLAYER_1) && toRow == 7) || (piece.belongsTo(PlayerNumber.PLAYER_2) && toRow == 0)){
+        if (
+            (piece.belongsTo(PlayerNumber.PLAYER_1) && toRow == 7) ||
+            (piece.belongsTo(PlayerNumber.PLAYER_2) && toRow == 0)
+        ) {
             piece.makeKing();
         }
-
     }
-    function getPiece(int row, int col) public returns (Piece){
+
+    function getPiece(uint row, uint col) public returns (Piece) {
         return board[row][col];
-    } 
-    function getBoard() public  returns  (Piece[][]){
+    }
+
+    function getBoard() public returns (Piece[][] memory) {
         return board;
     }
 }
