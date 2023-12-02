@@ -14,7 +14,7 @@ const Globaleaderboard = (props) => {
         if(props.address){
             getGlobalLeaderboard();
         }
-    }, [])
+    }, [props.address])
 
     const getGlobalLeaderboard = async() => {
         try{
@@ -23,24 +23,30 @@ const Globaleaderboard = (props) => {
             const signer = provider.getSigner();
             const contract = new ethers.Contract(mainContract, abi, signer);
             console.log('getting global leaderboard');
-            const playerList = await contract.getPlayerList();
-            console.log(playerList);
-            setPlayerList(playerList);
+            const transaction = await contract.getPlayerList();
+            console.log(transaction);
+            setPlayerList(transaction);
         }
         catch(err){
-            console.log('error fetching global leaderboard');
+            console.log('error fetching global leaderboard: ', err);
         }
     }
 
     return(
         <div className='parent-global-leaderboard-container'>
-            <p className='global-leaderboard-entry' >Global Leaderboard!</p>
+            <p className='global-leaderboard-title' >Global Leaderboard!</p>
             {props.address ? (
-                <div>
-                    <p className='global-leaderboard-entry' >Wallet is linked</p>
-                </div>
+                playerList ? (
+                    playerList.map((player) => {
+                        return(
+                            <p className='global-leaderboard-entry'>{player.id} | wins: {parseInt(player.numWins._hex, 16)}</p>
+                        )
+                    })
+                ) : (
+                    <p>Trying to get the leaderboard!</p>
+                )
             ) : (
-                <p>Connect your wallet to see the leaderboard!</p>
+                <p>Link your wallet to see your rank!</p>
             )}
         </div>
     )

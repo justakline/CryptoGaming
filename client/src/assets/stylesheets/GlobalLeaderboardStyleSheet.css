@@ -6,11 +6,18 @@
     margin: 2em;
 }
 
-.global-leaderboard-entry{
+.global-leaderboard-title{
     margin: 1em;
     font-weight: bold;
     color: white;
     font-size: 24px;
+}
+
+.global-leaderboard-entry{
+    margin: 1em;
+    /* font-weight: bold; */
+    color: white;
+    /* font-size: 24px; */
 }
 
 /* .all-games-entry{
