@@ -19,7 +19,10 @@ contract Piece {
     }
 
     function belongsTo(PlayerNumber player) public view returns (bool) {
-        return playerNumber == player;
+        if (playerNumber == player) {
+            return true;
+        }
+        return false;
     }
 
     function switchType(PlayerNumber player) public {

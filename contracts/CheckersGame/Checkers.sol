@@ -4,6 +4,8 @@ import "../Game.sol";
 
 contract Checkers is Game {
     Board public board;
+    uint boardSize;
+    address boardAddress;
     MainContract public main;
     PlayerNumber public currentPlayer;
     bool isOpen = false;
@@ -12,7 +14,7 @@ contract Checkers is Game {
     mapping(address => uint) addresstToBet;
 
     modifier gameIsOpen() {
-        require(isOpen == true, "Game is closed");
+        require(isOpen == true, "Game is Open");
         _;
     }
     modifier gameIsClosed() {
@@ -32,30 +34,34 @@ contract Checkers is Game {
     event InvalidMove(string err);
     event Winner(string s);
 
-    constructor(MainContract main, Checkers existingGame, uint256 wagerAmount) {
+    constructor(MainContract mainContract) {
         board = new Board();
+        boardAddress = address(board);
+        boardSize = board.getBoardSize();
         currentPlayer = PlayerNumber.PLAYER_1;
-        main = main;
+        main = mainContract;
         main.addCurrentGame(this);
     }
 
-    function addPlayer(address player, uint wager) public payable {
-        require(
-            msg.value >= wager && msg.value > 0,
-            "you did not wager enough"
-        );
+    function getBoardAddress() public view returns (address) {
+        return boardAddress;
+    }
+
+    function addPlayer(address player) public payable {
+        require(msg.value > 0, "you did not wager enough");
         require(players.length < 2, "Already have 2 players");
+        uint playerWager = msg.value;
         if (players.length == 0) {
             addressToPlayerNumber[player] = PlayerNumber.PLAYER_1;
         } else {
             addressToPlayerNumber[player] = PlayerNumber.PLAYER_2;
         }
 
-        this.wager(player, wager);
+        this.wager(player, playerWager);
         players.push(payable(player));
         //Start the game at 2 players
         if (players.length == 2) {
-            isOpen = false;
+            isOpen = true;
         }
     }
 
@@ -104,8 +110,9 @@ contract Checkers is Game {
         uint toCol,
         PlayerNumber player
     ) public returns (bool) {
+        require(player == currentPlayer, "You are not the current player");
         Piece piece = board.getPiece(fromRow, fromCol);
-        if (board.getPiece(toRow, toCol).belongsTo(PlayerNumber.NULL)) {
+        if (!board.getPiece(toRow, toCol).belongsTo(PlayerNumber.NULL)) {
             emit InvalidMove("Can not Jump to a piece that is already there");
             return false;
         }
@@ -323,12 +330,11 @@ contract Checkers is Game {
         uint toRow,
         uint toCol,
         PlayerNumber player
-    ) public gameIsOpen returns (bool) {
+    ) public gameIsOpen {
         if (isValidMore(fromRow, fromCol, toRow, toCol, player)) {
             movePiece(fromRow, fromCol, toRow, toCol);
-            return true;
+            switchPlayer();
         }
-        return false;
     }
 
     function movePiece(
@@ -337,13 +343,15 @@ contract Checkers is Game {
         uint toRow,
         uint toCol
     ) internal {
+        //Check
+
+        //Check for a jump
         if (abs((int)(fromRow) - (int)(toRow)) == 2) {
             uint captureRow = fromRow - toRow < 0 ? toRow - 1 : fromRow - 1;
             uint captureCol = fromCol - toCol < 0 ? toCol - 1 : fromCol - 1;
-            board.getBoard()[captureRow][captureCol].switchType(
-                PlayerNumber.NULL
-            );
+            board.setPiece(captureRow, captureCol, PlayerNumber.NULL);
         }
+
         board.movePiece(fromRow, fromCol, toRow, toCol);
         //Is the game over now?
         if (
@@ -359,9 +367,9 @@ contract Checkers is Game {
     function countPieces(PlayerNumber player) public returns (uint) {
         uint count = 0;
 
-        for (uint i = 0; i < board.getBoard().length; i++) {
-            for (uint j = 0; j < board.getBoard().length; j++) {
-                if (board.getBoard()[i][j].belongsTo(player)) count++;
+        for (uint i = 0; i < board.getBoardSize(); i++) {
+            for (uint j = 0; j < board.getBoardSize(); j++) {
+                if (board.getPiece(i, j).belongsTo(player)) count++;
             }
         }
         return count;
@@ -370,5 +378,24 @@ contract Checkers is Game {
     function abs(int value) public pure returns (int) {
         if (value < 0) return value * -1;
         return value;
+    }
+
+    function getBoardMatrix() public view returns (uint[8][8] memory) {
+        return board.getBoardPlayer();
+    }
+
+    function getBoard() public returns (Board) {
+        return board;
+    }
+
+    function getPiece(uint row, uint col) public view returns (Piece) {
+        return board.getPiece(row, col);
+    }
+
+    function getPiecePlayer(
+        uint row,
+        uint col
+    ) public view returns (PlayerNumber) {
+        return board.getPiecePlayer(row, col);
     }
 }

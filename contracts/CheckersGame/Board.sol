@@ -5,14 +5,16 @@ import "./PlayerNumber.sol";
 
 contract Board {
     uint public constant boardSize = 8;
-    Piece[][] public board;
+    Piece[boardSize][boardSize] public board;
 
     constructor() {
         board = createBoard();
     }
 
-    function createBoard() private returns (Piece[][] memory) {
-        Piece[boardSize][boardSize] memory tempBoard;
+    function createBoard()
+        private
+        returns (Piece[boardSize][boardSize] memory)
+    {
         for (uint row = 0; row < boardSize; row++) {
             for (uint col = 0; col < boardSize; col++) {
                 if (
@@ -21,15 +23,15 @@ contract Board {
                         (row % 2 == 1 && col % 2 == 1))
                 ) {
                     // all of the red ones in every other col
-                    tempBoard[row][col] = new Piece(PlayerNumber.PLAYER_1); //The first 3 rows
+                    board[row][col] = new Piece(PlayerNumber.PLAYER_1); //The first 3 rows
                 } else if (
                     row >= 5 &&
                     ((row % 2 == 0 && col % 2 == 0) ||
                         (row % 2 == 1 && col % 2 == 1))
                 ) {
-                    tempBoard[row][col] = new Piece(PlayerNumber.PLAYER_2); //Last 3 rows
+                    board[row][col] = new Piece(PlayerNumber.PLAYER_2); //Last 3 rows
                 } else {
-                    tempBoard[row][col] = new Piece(PlayerNumber.PLAYER_2);
+                    board[row][col] = new Piece(PlayerNumber.NULL);
                 }
             }
         }
@@ -53,11 +55,44 @@ contract Board {
         }
     }
 
-    function getPiece(uint row, uint col) public returns (Piece) {
+    function getPiece(uint row, uint col) public view returns (Piece) {
         return board[row][col];
     }
 
-    function getBoard() public returns (Piece[][] memory) {
-        return board;
+    function getPiecePlayer(
+        uint row,
+        uint col
+    ) public view returns (PlayerNumber) {
+        return board[row][col].playerNumber();
+    }
+
+    function setPiece(uint row, uint col, PlayerNumber number) public {
+        board[row][col] = new Piece(number);
+    }
+
+    function getBoardSize() public view returns (uint) {
+        return boardSize;
+    }
+
+    function getBoardPlayer()
+        public
+        view
+        returns (uint[boardSize][boardSize] memory)
+    {
+        uint[boardSize][boardSize] memory temp;
+        for (uint i = 0; i < boardSize; i++) {
+            for (uint j = 0; j < boardSize; j++) {
+                Piece p = board[i][j];
+                if (p.belongsTo(PlayerNumber.PLAYER_1)) {
+                    temp[i][j] = 1;
+                } else if (p.belongsTo(PlayerNumber.PLAYER_2)) {
+                    temp[i][j] = 2;
+                } else {
+                    temp[i][j] = 0;
+                }
+            }
+        }
+
+        return temp;
     }
 }
