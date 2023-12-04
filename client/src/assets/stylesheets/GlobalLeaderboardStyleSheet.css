@@ -1,0 +1,44 @@
+.global-leaderboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 2em;
+}
+
+.global-leaderboard-title{
+    margin: 1em;
+    font-weight: bold;
+    color: white;
+    font-size: 24px;
+}
+
+.global-leaderboard-entry{
+    margin: 1em;
+    /* font-weight: bold; */
+    color: white;
+    /* font-size: 24px; */
+}
+
+/* .all-games-entry{
+    margin: 1em;
+    font-weight: bold;
+    color: white;
+    font-size: 24px;
+} */
+
+.parent-global-leaderboard-container{
+    width: auto;
+    height: auto;
+    background-color: #5C5C5C;
+    margin: 2em;
+    border: 3px solid black;
+    border-radius: 7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-color: white;
+    margin: 2em;
+    /* animation: colorCycle 5s infinite; */
+}

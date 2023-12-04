@@ -1,46 +1,25 @@
 import { useState, useEffect } from 'react';
-import Header from '../components/header';
 import GameSelector from '../components/GameSelector';
 import MainContractState from '../components/MainContractState';
 import { useNavigate } from "react-router-dom";
 import '../assets/stylesheets/HomePageStyleSheet.css';
 
-const Home = () => {
-    const [address, setAddress] = useState('');
-    const [addressAuthenticated, setAddressAuthenticated] = useState(false);
+const Home = (props) => {
+    //props coming in from App.js: address, addressAuthenticated
+
+    let address = props.address;
 
     let navigate = useNavigate();
 
-    const handleLinkWallet = async() => {
-        const { ethereum } = window;
-        if(!ethereum){
-            console.log("Make sure you have metamask!");
-            return;
+    useEffect(() => {
+        const isBrave = 'brave' in window.navigator;
+        if(!isBrave){
+            alert("It looks like your not using the Brave browser. Some features may not work as intended.");
         }
-
-        try{
-            const accounts = await window.ethereum.request({
-                method: "eth_requestAccounts",
-            });
-            // const accounts = await ethereum.request({method: "eth_accounts"});
-            if(accounts.length !== 0){
-                const account = accounts[0];
-                setAddressAuthenticated(true)
-                setAddress(account);
-                fetchCurrentGames();
-            }
-            else{
-                console.log("no account found!");
-            }
+        else{
+            console.log('your using brave!');
         }
-        catch(err){
-            console.log(err);
-        }
-    }
-
-    const fetchCurrentGames = async() => {
-        console.log('fetching current games')
-    }
+    }, [])
 
     const handleNavigation = (page) => {
         //set up nav logic here
@@ -60,7 +39,7 @@ const Home = () => {
             navigate('/game-suggestion', {state: {address}});
         }
         else if(page === 'your-account'){
-            if(address){
+            if(props.address){
                 navigate('/your-account', {state: {address}});
             }
             else{
@@ -71,9 +50,8 @@ const Home = () => {
 
     return (
         <div>
-            <Header address={address} handleLinkWallet={handleLinkWallet} />
             <GameSelector handleNavigation={handleNavigation} />
-            <MainContractState address={address} />
+            <MainContractState address={props.address} />
         </div>
     )
 }

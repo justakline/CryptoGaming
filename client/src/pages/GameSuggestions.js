@@ -7,11 +7,12 @@ const GameSuggestions = () => {
     const [gameName, setGameName] = useState('');
     const [gameDescription, setGameDescription] = useState('');
 
+    const gameSuggestionsContract = '0x48203614dd0B216C44D9FB7f1Eb1fC1273233b5a';
+
     let location = useLocation();
     let address = location.state.address;
     return(
         <div>
-            <Header address={address}/>
             <div className='parent'>
                 <div className='form-container'>
                     <h1>Have an idea for a game?</h1>
