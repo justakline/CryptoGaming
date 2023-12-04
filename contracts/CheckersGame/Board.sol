@@ -95,4 +95,16 @@ contract Board {
 
         return temp;
     }
+
+    function getFlatArray() public view returns (uint[] memory) {
+        uint[] memory flattened = new uint[](boardSize * boardSize);
+        for (uint i = 0; i < boardSize; i++) {
+            for (uint j = 0; j < boardSize; j++) {
+                flattened[i * boardSize + j] = uint(
+                    board[i][j].getPlayerNumber()
+                );
+            }
+        }
+        return flattened;
+    }
 }

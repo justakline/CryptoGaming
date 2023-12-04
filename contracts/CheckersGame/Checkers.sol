@@ -34,11 +34,14 @@ contract Checkers is Game {
     event InvalidMove(string err);
     event Winner(string s);
 
-    constructor(MainContract mainContract) {
+    constructor() {
         board = new Board();
         boardAddress = address(board);
         boardSize = board.getBoardSize();
         currentPlayer = PlayerNumber.PLAYER_1;
+    }
+
+    function addMain(MainContract mainContract) public {
         main = mainContract;
         main.addCurrentGame(this);
     }
@@ -380,10 +383,6 @@ contract Checkers is Game {
         return value;
     }
 
-    function getBoardMatrix() public view returns (uint[8][8] memory) {
-        return board.getBoardPlayer();
-    }
-
     function getBoard() public returns (Board) {
         return board;
     }
@@ -397,5 +396,9 @@ contract Checkers is Game {
         uint col
     ) public view returns (PlayerNumber) {
         return board.getPiecePlayer(row, col);
+    }
+
+    function getBoardArrayFlat() public view returns (uint[] memory) {
+        return board.getFlatArray();
     }
 }

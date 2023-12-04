@@ -28,4 +28,8 @@ contract Piece {
     function switchType(PlayerNumber player) public {
         playerNumber = player;
     }
+
+    function getPlayerNumber() public view returns (PlayerNumber) {
+        return playerNumber;
+    }
 }
