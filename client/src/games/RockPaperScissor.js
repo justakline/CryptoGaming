@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../assets/stylesheets/RockPaperScissor.css';
 
 const choices = ['rock', 'paper', 'scissors'];
@@ -17,7 +17,7 @@ const getResult = (userChoice, computerChoice) => {
   }
 };
 
-const App = () => {
+const RockPaperScissor = () => {
   const [userChoice, setUserChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState(null);

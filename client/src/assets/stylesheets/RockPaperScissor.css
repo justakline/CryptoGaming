@@ -1,6 +1,9 @@
 .App {
-    text-align: center;
-    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh; /* This ensures the content takes up the full height of the viewport */
   }
   
   .choices {
@@ -10,9 +13,10 @@
     margin: 20px auto;
   }
   
-  button {
+  squarebutton {
     padding: 10px;
     margin: 5px;
     cursor: pointer;
   }
+  
   

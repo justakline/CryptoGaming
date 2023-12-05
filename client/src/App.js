@@ -5,6 +5,7 @@ import ColorGuess from './games/ColorGuess';
 import Checkers from './games/Checkers';
 import WordSearch from './games/WordSearch';
 import TicTacToe from './games/TicTacToe';
+import RockPaperScissor from './games/RockPaperScissor';
 import GameSuggestions from './pages/GameSuggestions';
 import Account from './pages/Account';
 import Header from './components/header';
@@ -51,6 +52,7 @@ const App = () => {
                     <Route exact path="/checkers" element={<Checkers />} />{" "}
                     <Route exact path="/word-search" element={<WordSearch />} />{" "}
                     <Route exact path="/tic-tac-toe" element={<TicTacToe />} />{" "}
+                    <Route exact path="/rock-paper-scissor" element={<RockPaperScissor />} />{" "}
                     <Route exact path="/game-suggestion" element={<GameSuggestions />} />{" "}
                     <Route exact path="/your-account" element={<Account />} />{" "}
                 </Routes>
