@@ -1,6 +1,7 @@
 import "./Board.sol";
 import "./PlayerNumber.sol";
 import "../Game.sol";
+import "./CheckersTracker.sol";
 
 contract Checkers is Game {
     Board public board;
@@ -12,6 +13,7 @@ contract Checkers is Game {
     address payable[] players;
     mapping(address => PlayerNumber) addressToPlayerNumber;
     mapping(address => uint) addresstToBet;
+    CheckersTracker tracker;
 
     modifier gameIsOpen() {
         require(isOpen == true, "Game is Open");
@@ -34,11 +36,12 @@ contract Checkers is Game {
     event InvalidMove(string err);
     event Winner(string s);
 
-    constructor() {
+    constructor(CheckersTracker checkerTracker) {
         board = new Board();
         boardAddress = address(board);
         boardSize = board.getBoardSize();
         currentPlayer = PlayerNumber.PLAYER_1;
+        tracker = checkerTracker;
     }
 
     function addMain(MainContract mainContract) public {
@@ -53,11 +56,18 @@ contract Checkers is Game {
     function addPlayer(address player) public payable {
         require(msg.value > 0, "you did not wager enough");
         require(players.length < 2, "Already have 2 players");
+        require(
+            !tracker.playerisPlaying(player),
+            "You can not play more than one Game at a time"
+        );
         uint playerWager = msg.value;
         if (players.length == 0) {
+            tracker.addGame(address(this));
+            tracker.addPlayerToGame(address(this), player);
             addressToPlayerNumber[player] = PlayerNumber.PLAYER_1;
         } else {
             addressToPlayerNumber[player] = PlayerNumber.PLAYER_2;
+            tracker.addPlayerToGame(address(this), player);
         }
 
         this.wager(player, playerWager);
@@ -80,6 +90,7 @@ contract Checkers is Game {
             emit Winner("Player 2 won ");
             payable(players[1]).transfer(address(this).balance);
         }
+        tracker.removeGame(address(this));
     }
 
     function wager(
@@ -400,5 +411,9 @@ contract Checkers is Game {
 
     function getBoardArrayFlat() public view returns (uint[] memory) {
         return board.getFlatArray();
+    }
+
+    function isOpenGame() public returns (bool) {
+        return isOpen;
     }
 }

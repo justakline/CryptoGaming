@@ -1,0 +1,117 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\justa\\Desktop\\Crypto Project\\client\\Hardhat\\contracts\\Game.sol": {
+      "lastModificationDate": 1701831365238,
+      "contentHash": "d74fb6dee8eb3fb389987cb37eee1959",
+      "sourceName": "contracts/Game.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./MainContract.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "Game"
+      ]
+    },
+    "C:\\Users\\justa\\Desktop\\Crypto Project\\client\\Hardhat\\contracts\\MainContract.sol": {
+      "lastModificationDate": 1701833082680,
+      "contentHash": "5be84b3e031de28022362e0e7b8fa050",
+      "sourceName": "contracts/MainContract.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Game.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "MainContract"
+      ]
+    },
+    "C:\\Users\\justa\\Desktop\\Crypto Project\\client\\Hardhat\\contracts\\RockPaperScissors.sol": {
+      "lastModificationDate": 1701838619400,
+      "contentHash": "5f2e9d82bfc3f609413f592e698ff454",
+      "sourceName": "contracts/RockPaperScissors.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./MainContract.sol",
+        "./Game.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "RockPaperScissors"
+      ]
+    }
+  }
+}
