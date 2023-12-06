@@ -1,0 +1,22 @@
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh; /* This ensures the content takes up the full height of the viewport */
+  }
+  
+  .choices {
+    display: flex;
+    justify-content: space-between;
+    max-width: 200px;
+    margin: 20px auto;
+  }
+  
+  squarebutton {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  

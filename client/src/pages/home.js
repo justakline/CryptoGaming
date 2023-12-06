@@ -38,6 +38,10 @@ const Home = (props) => {
         else if(page === 'game-suggestion'){
             navigate('/game-suggestion', {state: {address}});
         }
+        else if(page === 'rock-paper-scissor'){
+            navigate('/rock-paper-scissor', {state: {address}});
+        }
+
         else if(page === 'your-account'){
             if(props.address){
                 navigate('/your-account', {state: {address}});
