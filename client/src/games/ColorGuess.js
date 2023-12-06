@@ -94,30 +94,32 @@ const ColorGuess = () => {
             console.log('inside medium function');
             let firstTwoDigits = myColor[1] + myColor[2];
             let restOfDigits = new Array(4).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
-            return firstTwoDigits.concat(restOfDigits);
+            let finalArray = firstTwoDigits.concat(restOfDigits);
+            while(finalArray === color.replace('#', '') || finalArray === colorOptions[1].replace('#', '')){
+                restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+                finalArray = firstTwoDigits.concat(restOfDigits);
+            }
+            return '#' + finalArray;
         }
         else if(difficulty === 'hard'){
             let firstFourDigits = myColor[1] + myColor[2] + myColor[3] + myColor[4];
             let restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
-            let finalArray = '#' + firstFourDigits.concat(restOfDigits);
-            while(finalArray === color){
+            let finalArray = firstFourDigits.concat(restOfDigits);
+            while(finalArray === color.replace('#', '') || finalArray === colorOptions[1].replace('#', '')){
                 restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
-                finalArray = '#' + firstFourDigits.concat(restOfDigits);
+                finalArray = firstFourDigits.concat(restOfDigits);
             }
-            let returnArray = finalArray.split('#').pop();
-            return returnArray;
+            return '#' + finalArray;
         }
         else if(difficulty === 'impossible'){
-            console.log('colorOptions[1]: ', colorOptions[1]);
             let firstFiveDigits = myColor[1] + myColor[2] + myColor[3] + myColor[4] + myColor[5];
-            let restOfDigits = new Array(1).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
-            let finalArray = '#' + firstFiveDigits.concat(restOfDigits);
-            while(finalArray === color || finalArray === colorOptions[1]){
-                restOfDigits = new Array(1).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
-                finalArray = '#' + firstFiveDigits.concat(restOfDigits);
+            let restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+            let finalArray = firstFiveDigits.concat(restOfDigits);
+            while(finalArray === color.replace('#', '') || finalArray === colorOptions[1].replace('#', '')){
+                restOfDigits = new Array(2).fill('').map(() => hexDigits[Math.floor(Math.random() * hexDigits.length)]).join('');
+                finalArray = firstFiveDigits.concat(restOfDigits);
             }
-            // let returnArray = finalArray.split('#').pop();
-            return finalArray;
+            return '#' + finalArray;
         }
     }
 
